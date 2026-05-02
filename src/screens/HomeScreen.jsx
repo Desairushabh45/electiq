@@ -32,9 +32,9 @@ const STATS = [
 
 export default function HomeScreen({ nav }) {
   return (
-    <div>
+    <div id="main-content" role="main">
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden"
+      <section role="region" aria-labelledby="hero-heading" className="relative overflow-hidden"
         style={{ background: 'linear-gradient(135deg, #1a237e 0%, #283593 55%, #1565c0 100%)' }}>
 
         {/* decorative circles */}
@@ -48,7 +48,7 @@ export default function HomeScreen({ nav }) {
             🗳️ India's Election Education Platform
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6"
+          <h1 id="hero-heading" className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6"
             style={{ fontFamily: 'Outfit, sans-serif' }}>
             <span style={{ color: '#FF9933' }}>ElectIQ</span> — Your Election
             <br className="hidden md:block" /> Education Assistant
@@ -61,12 +61,14 @@ export default function HomeScreen({ nav }) {
 
           <div className="flex flex-wrap justify-center gap-4">
             <button onClick={() => nav(SCREENS.TIMELINE)}
-              className="flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-inavy-500 transition-all hover:scale-105 hover:shadow-xl shadow-lg"
+              className="flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-inavy-500 transition-all hover:scale-105 hover:shadow-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
+              aria-label="Explore Timeline"
               style={{ background: '#FF9933', color: '#1a237e' }}>
-              Explore Timeline <ArrowRight size={18} />
+              Explore Timeline <ArrowRight size={18} aria-hidden="true" />
             </button>
             <button onClick={() => nav(SCREENS.HOW_IT_WORKS)}
-              className="flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white border-2 border-white/30 hover:bg-white/10 transition-all">
+              aria-label="How It Works"
+              className="flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white border-2 border-white/30 hover:bg-white/10 transition-all focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
               How It Works
             </button>
           </div>
@@ -81,13 +83,13 @@ export default function HomeScreen({ nav }) {
       </section>
 
       {/* ── STATS ── */}
-      <section className="max-w-4xl mx-auto px-6 py-10">
+      <section role="region" aria-label="Quick Stats" className="max-w-4xl mx-auto px-6 py-10">
         <div className="grid grid-cols-3 gap-4">
           {STATS.map((s, i) => {
             const Icon = s.icon;
             return (
               <div key={i} className="text-center bg-white rounded-2xl p-5 card-shadow border border-slate-100">
-                <Icon size={24} className="mx-auto mb-2 text-saffron-500" />
+                <Icon size={24} className="mx-auto mb-2 text-saffron-500" aria-hidden="true" />
                 <p className="text-2xl font-extrabold" style={{ color: '#1a237e' }}>{s.value}</p>
                 <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
               </div>
@@ -97,9 +99,9 @@ export default function HomeScreen({ nav }) {
       </section>
 
       {/* ── FEATURE CARDS ── */}
-      <section className="max-w-6xl mx-auto px-6 pb-16">
+      <section role="region" aria-labelledby="features-heading" className="max-w-6xl mx-auto px-6 pb-16">
         <div className="text-center mb-10">
-          <h2 className="section-heading">What Would You Like to Learn?</h2>
+          <h2 id="features-heading" className="section-heading">What Would You Like to Learn?</h2>
           <p className="text-slate-500 text-lg max-w-xl mx-auto">
             Choose a topic below to start your election education journey.
           </p>
@@ -110,17 +112,18 @@ export default function HomeScreen({ nav }) {
             const Icon = card.icon;
             return (
               <button key={i} onClick={() => nav(card.screen)}
-                className={`group text-left ${card.bg} border ${card.border} rounded-2xl p-6 card-shadow hover:scale-[1.02] transition-all duration-200`}>
+                aria-label={`Learn more about ${card.label}`}
+                className={`group text-left ${card.bg} border ${card.border} rounded-2xl p-6 card-shadow hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500`}>
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
                   style={{ background: card.iconColor + '20' }}>
-                  <Icon size={24} style={{ color: card.iconColor }} />
+                  <Icon size={24} style={{ color: card.iconColor }} aria-hidden="true" />
                 </div>
                 <h3 className="font-bold text-lg text-slate-900 mb-2 group-hover:text-inavy-500 transition-colors">
                   {card.label}
                 </h3>
-                <p className="text-slate-500 text-sm leading-relaxed mb-4">{card.desc}</p>
+                <p className="text-slate-600 text-sm leading-relaxed mb-4">{card.desc}</p>
                 <span className="text-xs font-bold flex items-center gap-1" style={{ color: card.iconColor }}>
-                  Learn more <ArrowRight size={12} />
+                  Learn more <ArrowRight size={12} aria-hidden="true" />
                 </span>
               </button>
             );
@@ -129,14 +132,14 @@ export default function HomeScreen({ nav }) {
       </section>
 
       {/* ── AI CTA BANNER ── */}
-      <section className="max-w-6xl mx-auto px-6 pb-20">
+      <section role="region" aria-labelledby="ai-cta-heading" className="max-w-6xl mx-auto px-6 pb-20">
         <div className="rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden"
           style={{ background: 'linear-gradient(135deg, #138808, #15803d)' }}>
           <div className="absolute inset-0 opacity-10"
             style={{ background: 'radial-gradient(circle at 30% 50%, white, transparent)' }} />
           <div className="relative">
-            <p className="text-4xl mb-4">🤖</p>
-            <h2 className="text-2xl md:text-3xl font-extrabold mb-3" style={{ fontFamily: 'Outfit' }}>
+            <p className="text-4xl mb-4" aria-hidden="true">🤖</p>
+            <h2 id="ai-cta-heading" className="text-2xl md:text-3xl font-extrabold mb-3" style={{ fontFamily: 'Outfit' }}>
               Have Questions? Ask the AI
             </h2>
             <p className="text-green-100 text-base mb-6 max-w-lg mx-auto">
@@ -144,7 +147,8 @@ export default function HomeScreen({ nav }) {
             </p>
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('open-chatbot'))}
-              className="px-8 py-3.5 bg-white rounded-xl font-bold text-igreen-500 hover:bg-green-50 transition-all hover:scale-105 shadow-lg"
+              aria-label="Ask ElectIQ AI"
+              className="px-8 py-3.5 bg-white rounded-xl font-bold text-igreen-500 hover:bg-green-50 transition-all hover:scale-105 shadow-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
               style={{ color: '#138808' }}>
               ✨ Ask ElectIQ AI
             </button>

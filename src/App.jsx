@@ -25,8 +25,11 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:bg-blue-600 focus:text-white focus:p-3">
+        Skip to main content
+      </a>
       <Navbar screen={screen} nav={nav} />
-      <main className="pt-16">
+      <div className="pt-16">
         <div key={screen} className="page-animate">
           {screen === SCREENS.HOME && <HomeScreen {...screenProps} />}
           {screen === SCREENS.TIMELINE && <TimelineScreen {...screenProps} />}
@@ -34,7 +37,7 @@ export default function App() {
           {screen === SCREENS.QUIZ && <QuizScreen {...screenProps} />}
           {screen === SCREENS.ABOUT_ECI && <AboutECIScreen {...screenProps} />}
         </div>
-      </main>
+      </div>
       <FloatingChatbot />
     </div>
   );

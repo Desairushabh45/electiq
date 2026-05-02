@@ -9,7 +9,7 @@ const topics = [
     id: 'register',
     icon: UserCheck,
     color: 'saffron',
-    title: 'मतदाता पंजीकरण · How to Register as a Voter',
+    title: <><span lang="hi">मतदाता पंजीकरण</span> · How to Register as a Voter</>,
     summary: 'Learn how to add your name to the Electoral Roll and get your Voter ID (EPIC) card — your gateway to Indian democracy.',
     content: [
       {
@@ -55,7 +55,7 @@ const topics = [
         text: 'Gram Panchayat, Municipal Corporation, and Nagar Panchayat elections are conducted by State Election Commissions (not the ECI). These elect local representatives who handle everyday civic needs — roads, sanitation, water supply.',
       },
       {
-        heading: 'By-Elections (उपचुनाव)',
+        heading: <><span lang="hi">उपचुनाव</span> (By-Elections)</>,
         text: 'If an MP or MLA seat falls vacant due to death, resignation, or disqualification, a by-election is held to fill that specific seat. It follows the same process as a regular election.',
       },
     ],
@@ -167,24 +167,25 @@ const TopicCard = ({ topic }) => {
     <div className={`bg-white rounded-2xl shadow-md border ${isExpanded ? c.border : 'border-slate-100'} transition-all duration-300 overflow-hidden`}>
       <button
         onClick={toggle}
-        className="w-full text-left p-6 flex items-start gap-4 hover:bg-slate-50 transition-colors"
+        className="w-full text-left p-6 flex items-start gap-4 hover:bg-slate-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
         id={`topic-${topic.id}`}
         aria-expanded={isExpanded}
+        aria-controls={`topic-content-${topic.id}`}
       >
         <div className={`${c.bg} p-3 rounded-xl flex-shrink-0 mt-0.5`}>
-          <Icon size={24} className={c.icon} />
+          <Icon size={24} className={c.icon} aria-hidden="true" />
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="font-bold text-slate-900 text-base leading-tight mb-1">{topic.title}</h3>
           <p className="text-slate-500 text-sm leading-relaxed">{topic.summary}</p>
         </div>
         <div className="flex-shrink-0 ml-2 mt-1">
-          {isExpanded ? <ChevronUp size={20} className="text-slate-400" /> : <ChevronDown size={20} className="text-slate-400" />}
+          {isExpanded ? <ChevronUp size={20} className="text-slate-500" aria-hidden="true" /> : <ChevronDown size={20} className="text-slate-500" aria-hidden="true" />}
         </div>
       </button>
 
       {isExpanded && (
-        <div className={`${c.bg} border-t ${c.border} px-6 py-5 space-y-5`}>
+        <div id={`topic-content-${topic.id}`} className={`${c.bg} border-t ${c.border} px-6 py-5 space-y-5`}>
           {topic.content.map((section, i) => (
             <div key={i}>
               <h4 className={`font-bold text-sm mb-2 ${c.heading}`}>{section.heading}</h4>
@@ -196,9 +197,9 @@ const TopicCard = ({ topic }) => {
               href={topic.link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`inline-flex items-center gap-2 text-sm font-semibold ${c.icon} hover:underline mt-2`}
+              className={`inline-flex items-center gap-2 text-sm font-semibold ${c.icon} hover:underline mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-sm`}
             >
-              {topic.link.label} <ExternalLink size={14} />
+              {topic.link.label} <ExternalLink size={14} aria-hidden="true" />
             </a>
           )}
         </div>
@@ -212,7 +213,7 @@ const TopicCards = () => {
     <section id="topics" className="w-full">
       <div className="text-center mb-8">
         <h2 className="text-3xl md:text-4xl text-slate-900 mb-3 font-bold">
-          मुख्य विषय · Quick Topic Guides
+          <span lang="hi">मुख्य विषय</span> · Quick Topic Guides
         </h2>
         <p className="text-slate-600 max-w-2xl mx-auto text-lg">
           Click any topic to expand a detailed guide on key Indian election concepts.

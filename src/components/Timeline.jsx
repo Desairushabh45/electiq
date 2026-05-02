@@ -170,7 +170,7 @@ const Timeline = ({ rightWidget }) => {
     <section className="w-full" id="timeline">
       <div className="text-center mb-6">
         <h2 className="text-3xl md:text-4xl text-slate-900 mb-3 font-bold">
-          भारतीय चुनाव प्रक्रिया · Indian Election Timeline
+          <span lang="hi">भारतीय चुनाव प्रक्रिया</span> · Indian Election Timeline
         </h2>
         <p className="text-slate-600 max-w-2xl mx-auto text-lg">
           Click any step to understand how India's general elections work — from voter registration to swearing-in.
@@ -181,34 +181,37 @@ const Timeline = ({ rightWidget }) => {
 
         {/* Left Column — Stage Menu */}
         <div className="lg:col-span-3 sticky top-20 bg-white shadow-md p-4 rounded-2xl border border-slate-100">
-          <div className="flex flex-col space-y-1">
+          <div role="list" className="flex flex-col space-y-1">
             {stages.map((stage) => {
               const isActive = activeStage === stage.id;
               const isPast = stage.id < activeStage;
               return (
-                <button
-                  key={stage.id}
-                  onClick={() => handleStageClick(stage.id)}
-                  className={`flex items-center gap-3 text-left px-3 py-2.5 rounded-xl transition-all ${
-                    isActive ? 'bg-orange-50 border border-orange-200 shadow-sm' : 'hover:bg-slate-50 border border-transparent'
-                  }`}
-                >
+                <div role="listitem" key={stage.id}>
+                  <button
+                    onClick={() => handleStageClick(stage.id)}
+                    aria-label={`Step ${stage.id}: ${stage.title}`}
+                    aria-expanded={isActive}
+                    className={`w-full flex items-center gap-3 text-left px-3 py-2.5 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                      isActive ? 'bg-orange-50 border border-orange-200 shadow-sm' : 'hover:bg-slate-50 border border-transparent'
+                    }`}
+                  >
                   <div className="flex-shrink-0">
                     {isActive ? (
-                      <CheckCircle2 size={20} className="text-saffron-500" />
+                      <CheckCircle2 size={20} className="text-saffron-500" aria-hidden="true" />
                     ) : isPast ? (
-                      <CheckCircle2 size={20} className="text-green-500" />
+                      <CheckCircle2 size={20} className="text-green-500" aria-hidden="true" />
                     ) : (
-                      <Circle size={20} className="text-slate-300" />
+                      <Circle size={20} className="text-slate-300" aria-hidden="true" />
                     )}
                   </div>
                   <div className="min-w-0">
                     <p className={`font-semibold text-xs truncate ${isActive ? 'text-orange-900' : 'text-slate-700'}`}>
-                      {stage.icon} {stage.title}
+                      <span aria-hidden="true">{stage.icon}</span> {stage.title}
                     </p>
-                    <p className="text-xs text-slate-400 mt-0.5 line-clamp-1">{stage.description}</p>
+                    <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">{stage.description}</p>
                   </div>
-                </button>
+                  </button>
+                </div>
               );
             })}
           </div>
@@ -220,7 +223,7 @@ const Timeline = ({ rightWidget }) => {
           {/* Stage Header */}
           <div className={`${c.bg} px-8 py-6 border-b ${c.border}`}>
             <div className="flex items-center gap-4 mb-3">
-              <span className="text-4xl">{activeData.icon}</span>
+              <span className="text-4xl" aria-hidden="true">{activeData.icon}</span>
               <div>
                 <span className={`text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${c.badge}`}>
                   Step {activeData.id} of {stages.length}
@@ -228,13 +231,13 @@ const Timeline = ({ rightWidget }) => {
                 <h2 className={`text-2xl md:text-3xl font-bold mt-1 ${c.text}`}>{activeData.title}</h2>
               </div>
             </div>
-            <p className="text-slate-600 text-base leading-relaxed">{activeData.detail.overview}</p>
+            <p className="text-slate-700 text-base leading-relaxed">{activeData.detail.overview}</p>
           </div>
 
           {/* Key Facts */}
           <div className="px-8 py-6 flex-1">
             <h4 className="text-slate-900 font-bold text-lg mb-4 flex items-center gap-2">
-              <ChevronRight size={18} className={c.bullet} /> Key Facts
+              <ChevronRight size={18} className={c.bullet} aria-hidden="true" /> Key Facts
             </h4>
             <ul className="space-y-3 mb-6">
               {activeData.detail.keyFacts.map((fact, i) => (
@@ -247,9 +250,9 @@ const Timeline = ({ rightWidget }) => {
 
             {/* Did You Know */}
             <div className={`${c.bg} border ${c.border} rounded-xl p-5 flex gap-3`}>
-              <Info size={20} className={`${c.bullet} flex-shrink-0 mt-0.5`} />
+              <Info size={20} className={`${c.bullet} flex-shrink-0 mt-0.5`} aria-hidden="true" />
               <div>
-                <p className={`font-bold text-sm mb-1 ${c.text}`}>💡 क्या आप जानते हैं? (Did You Know?)</p>
+                <p className={`font-bold text-sm mb-1 ${c.text}`}>💡 <span lang="hi">क्या आप जानते हैं?</span> (Did You Know?)</p>
                 <p className="text-slate-700 text-sm leading-relaxed">{activeData.detail.didYouKnow}</p>
               </div>
             </div>

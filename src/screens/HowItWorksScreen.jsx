@@ -1,19 +1,19 @@
 const Section = ({ title, subtitle, color, children }) => (
-  <div className="mb-16">
+  <section role="region" aria-labelledby={`section-${title.replace(/\s+/g, '-').toLowerCase()}`} className="mb-16">
     <div className="flex items-center gap-3 mb-2">
       <div className="w-1 h-10 rounded-full" style={{ background: color }} />
       <div>
-        <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900" style={{ fontFamily: 'Outfit' }}>{title}</h2>
+        <h2 id={`section-${title.replace(/\s+/g, '-').toLowerCase()}`} className="text-2xl md:text-3xl font-extrabold text-slate-900" style={{ fontFamily: 'Outfit' }}>{title}</h2>
         <p className="text-slate-500 text-sm mt-0.5">{subtitle}</p>
       </div>
     </div>
     <div className="mt-6">{children}</div>
-  </div>
+  </section>
 );
 
 const Step = ({ num, title, desc, color, icon }) => (
   <div className="flex items-start gap-4">
-    <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0 text-lg"
+    <div aria-hidden="true" className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0 text-lg"
       style={{ background: color, minWidth: 40 }}>
       {icon || num}
     </div>
@@ -26,9 +26,9 @@ const Step = ({ num, title, desc, color, icon }) => (
 
 export default function HowItWorksScreen() {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-12">
+    <div id="main-content" role="main" className="max-w-3xl mx-auto px-4 py-12">
       <div className="text-center mb-14">
-        <h1 className="section-heading text-4xl md:text-5xl mb-3">How It Works</h1>
+        <h1 id="how-it-works-heading" className="section-heading text-4xl md:text-5xl mb-3">How It Works</h1>
         <p className="text-slate-500 text-lg max-w-xl mx-auto">
           Three essential guides to understanding the mechanics of Indian elections.
         </p>
@@ -67,7 +67,7 @@ export default function HowItWorksScreen() {
               { icon: '🔒', title: 'Why It\'s Secure', desc: 'EVMs are standalone, battery-operated, and NOT connected to the internet or any network. Software is burnt into a one-time programmable chip — it cannot be rewritten.' },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-xl p-4 border border-blue-100">
-                <p className="text-2xl mb-2">{item.icon}</p>
+                <p className="text-2xl mb-2" aria-hidden="true">{item.icon}</p>
                 <p className="font-bold text-slate-900 mb-1 text-sm">{item.title}</p>
                 <p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p>
               </div>
@@ -106,11 +106,11 @@ export default function HowItWorksScreen() {
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-white rounded-xl p-4 border border-green-100">
-              <p className="font-bold text-green-800 text-sm mb-1">⚡ Speed</p>
+              <p className="font-bold text-green-800 text-sm mb-1"><span aria-hidden="true">⚡</span> Speed</p>
               <p className="text-slate-500 text-xs">Results for all 543 Lok Sabha seats in the 2024 election were declared on a single day (June 4, 2024).</p>
             </div>
             <div className="bg-white rounded-xl p-4 border border-green-100">
-              <p className="font-bold text-green-800 text-sm mb-1">📋 Recounts</p>
+              <p className="font-bold text-green-800 text-sm mb-1"><span aria-hidden="true">📋</span> Recounts</p>
               <p className="text-slate-500 text-xs">If results are within a very thin margin, candidates can request a recount. Election disputes go to the High Court via an Election Petition within 45 days.</p>
             </div>
           </div>

@@ -49,7 +49,7 @@ const RANKS = [
   { min: 6, label: 'भारत रत्न — Election Expert! 🏆', color: '#b45309' },
   { min: 4, label: 'Lok Sabha Scholar 🏛️', color: '#1a237e' },
   { min: 2, label: 'Engaged Citizen 🗳️', color: '#138808' },
-  { min: 0, label: 'नागरिक शागिर्द — Keep Learning 📚', color: '#FF9933' },
+  { min: 0, label: <><span lang="hi">नागरिक शागिर्द</span> — Keep Learning 📚</>, color: '#FF9933' },
 ];
 
 export default function QuizScreen() {
@@ -75,12 +75,12 @@ export default function QuizScreen() {
   const reset = () => { setIdx(0); setChosen(null); setScore(0); setDone(false); };
 
   if (done) return (
-    <div className="max-w-xl mx-auto px-4 py-16 text-center">
-      <Award size={72} className="mx-auto mb-6" style={{ color: '#FF9933' }} />
+    <div id="main-content" role="main" className="max-w-xl mx-auto px-4 py-16 text-center">
+      <Award size={72} className="mx-auto mb-6" style={{ color: '#FF9933' }} aria-hidden="true" />
       <h2 className="text-3xl font-extrabold text-slate-900 mb-2" style={{ fontFamily: 'Outfit' }}>Quiz Complete!</h2>
       <p className="text-slate-500 mb-8">Here's how you scored on Indian Election Knowledge</p>
 
-      <div className="rounded-3xl p-8 mb-8 border-2" style={{ background: '#fffbeb', borderColor: '#FF9933' }}>
+      <div role="status" className="rounded-3xl p-8 mb-8 border-2" style={{ background: '#fffbeb', borderColor: '#FF9933' }}>
         <p className="text-6xl font-extrabold mb-1" style={{ color: '#1a237e' }}>{score}<span className="text-2xl text-slate-400 font-normal"> / {QUESTIONS.length}</span></p>
 
         {/* Tricolor progress bar */}
@@ -104,15 +104,15 @@ export default function QuizScreen() {
       </div>
 
       <button onClick={reset}
-        className="flex items-center gap-2 mx-auto px-8 py-3.5 rounded-xl font-bold text-white"
+        className="flex items-center gap-2 mx-auto px-8 py-3.5 rounded-xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         style={{ background: '#1a237e' }}>
-        <RefreshCcw size={18} /> Retake Quiz
+        <RefreshCcw size={18} aria-hidden="true" /> Retake Quiz
       </button>
     </div>
   );
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-12">
+    <div id="main-content" role="main" className="max-w-2xl mx-auto px-4 py-12">
       <div className="text-center mb-10">
         <h1 className="section-heading mb-2">🇮🇳 Test Your Knowledge</h1>
         <p className="text-slate-500">6 questions on India's election system. How much do you know?</p>
@@ -133,7 +133,7 @@ export default function QuizScreen() {
       {/* Question card */}
       <div className="bg-white rounded-3xl p-8 card-shadow border border-slate-100 mb-6">
         <p className="text-xs font-bold text-saffron-500 uppercase tracking-wider mb-3">Question {idx+1}</p>
-        <h2 className="text-xl font-bold text-slate-900 mb-6 leading-snug">{q.q}</h2>
+        <h2 id="question-heading" className="text-xl font-bold text-slate-900 mb-6 leading-snug">{q.q}</h2>
 
         <div className="space-y-3">
           {q.options.map((opt, i) => {
@@ -145,7 +145,9 @@ export default function QuizScreen() {
 
             return (
               <button key={i} onClick={() => pick(i)} disabled={chosen !== null}
-                className="w-full text-left px-5 py-4 rounded-xl border-2 font-medium text-sm transition-all flex justify-between items-center"
+                aria-label={`Option ${i+1}: ${opt}`}
+                aria-describedby="question-heading"
+                className="w-full text-left px-5 py-4 rounded-xl border-2 font-medium text-sm transition-all flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{
                   borderColor: showGreen ? '#138808' : showRed ? '#dc2626' : chosen !== null ? '#e2e8f0' : '#e2e8f0',
                   background:  showGreen ? '#f0fdf4' : showRed ? '#fef2f2' : chosen !== null ? '#f8fafc' : 'white',
@@ -154,8 +156,8 @@ export default function QuizScreen() {
                   cursor: chosen !== null ? 'default' : 'pointer',
                 }}>
                 <span>{opt}</span>
-                {showGreen && <CheckCircle2 size={20} className="flex-shrink-0" style={{ color: '#138808' }} />}
-                {showRed   && <XCircle      size={20} className="flex-shrink-0" style={{ color: '#dc2626' }} />}
+                {showGreen && <CheckCircle2 size={20} className="flex-shrink-0" style={{ color: '#138808' }} aria-hidden="true" />}
+                {showRed   && <XCircle      size={20} className="flex-shrink-0" style={{ color: '#dc2626' }} aria-hidden="true" />}
               </button>
             );
           })}
@@ -163,7 +165,7 @@ export default function QuizScreen() {
 
         {/* Explanation */}
         {chosen !== null && (
-          <div className="mt-5 p-4 rounded-xl text-sm leading-relaxed"
+          <div aria-live="polite" className="mt-5 p-4 rounded-xl text-sm leading-relaxed"
             style={{ background: '#eff6ff', borderLeft: '4px solid #1a237e' }}>
             <strong className="text-inavy-500" style={{ color: '#1a237e' }}>💡 Explanation:</strong>
             <span className="text-slate-600 ml-1">{q.explanation}</span>
@@ -175,7 +177,7 @@ export default function QuizScreen() {
       {chosen !== null && (
         <div className="flex justify-end">
           <button onClick={next}
-            className="px-8 py-3.5 rounded-xl font-bold text-white transition-all hover:opacity-90"
+            className="px-8 py-3.5 rounded-xl font-bold text-white transition-all hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             style={{ background: '#1a237e' }}>
             {idx < QUESTIONS.length - 1 ? 'Next Question →' : 'View Results 🏆'}
           </button>

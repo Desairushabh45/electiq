@@ -36,11 +36,11 @@ const HOW_FAIR = [
 
 export default function AboutECIScreen() {
   return (
-    <div className="max-w-5xl mx-auto px-4 py-12">
+    <div id="main-content" role="main" className="max-w-5xl mx-auto px-4 py-12">
       {/* Header */}
-      <div className="text-center mb-14">
-        <div className="text-6xl mb-4">🗳️</div>
-        <h1 className="section-heading text-4xl md:text-5xl mb-3">
+      <div role="region" aria-labelledby="eci-heading" className="text-center mb-14">
+        <div className="text-6xl mb-4" aria-hidden="true">🗳️</div>
+        <h1 id="eci-heading" className="section-heading text-4xl md:text-5xl mb-3">
           Election Commission of India
         </h1>
         <p className="text-slate-500 text-lg max-w-2xl mx-auto">
@@ -49,7 +49,7 @@ export default function AboutECIScreen() {
       </div>
 
       {/* Article 324 Banner */}
-      <div className="rounded-3xl p-8 mb-12 text-white text-center"
+      <div role="region" aria-label="Constitutional Basis" className="rounded-3xl p-8 mb-12 text-white text-center"
         style={{ background: 'linear-gradient(135deg, #1a237e 0%, #283593 100%)' }}>
         <p className="text-sm font-semibold text-blue-200 mb-2 uppercase tracking-widest">Constitutional Basis</p>
         <p className="text-3xl md:text-4xl font-extrabold mb-3" style={{ fontFamily: 'Outfit' }}>Article 324</p>
@@ -60,12 +60,12 @@ export default function AboutECIScreen() {
       </div>
 
       {/* Quick Facts Grid */}
-      <div className="mb-14">
-        <h2 className="text-2xl font-extrabold text-slate-900 mb-6" style={{ fontFamily: 'Outfit' }}>Quick Facts</h2>
+      <div role="region" aria-labelledby="quick-facts-heading" className="mb-14">
+        <h2 id="quick-facts-heading" className="text-2xl font-extrabold text-slate-900 mb-6" style={{ fontFamily: 'Outfit' }}>Quick Facts</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {FACTS.map((f, i) => (
             <div key={i} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 text-center">
-              <p className="text-3xl mb-2">{f.icon}</p>
+              <p className="text-3xl mb-2" aria-hidden="true">{f.icon}</p>
               <p className="text-xl font-extrabold" style={{ color: '#1a237e' }}>{f.value}</p>
               <p className="text-xs text-slate-500 mt-1">{f.label}</p>
             </div>
@@ -74,12 +74,12 @@ export default function AboutECIScreen() {
       </div>
 
       {/* Structure */}
-      <div className="mb-14">
-        <h2 className="text-2xl font-extrabold text-slate-900 mb-6" style={{ fontFamily: 'Outfit' }}>ECI Structure</h2>
+      <div role="region" aria-labelledby="eci-structure-heading" className="mb-14">
+        <h2 id="eci-structure-heading" className="text-2xl font-extrabold text-slate-900 mb-6" style={{ fontFamily: 'Outfit' }}>ECI Structure</h2>
         <div className="grid md:grid-cols-3 gap-5">
           {ROLES.map((r, i) => (
             <div key={i} className="bg-orange-50 rounded-2xl p-6 border border-orange-100">
-              <p className="text-4xl mb-3">{r.icon}</p>
+              <p className="text-4xl mb-3" aria-hidden="true">{r.icon}</p>
               <h3 className="font-extrabold text-slate-900 mb-2 text-sm" style={{ fontFamily: 'Outfit' }}>{r.title}</h3>
               <p className="text-slate-600 text-xs leading-relaxed">{r.desc}</p>
             </div>
@@ -88,15 +88,15 @@ export default function AboutECIScreen() {
       </div>
 
       {/* How ECI ensures fair elections */}
-      <div className="mb-14">
-        <h2 className="text-2xl font-extrabold text-slate-900 mb-2" style={{ fontFamily: 'Outfit' }}>
+      <div role="region" aria-labelledby="fair-elections-heading" className="mb-14">
+        <h2 id="fair-elections-heading" className="text-2xl font-extrabold text-slate-900 mb-2" style={{ fontFamily: 'Outfit' }}>
           How ECI Ensures Fair Elections
         </h2>
         <p className="text-slate-500 text-sm mb-6">6 key mechanisms that make Indian elections free and fair.</p>
         <div className="grid md:grid-cols-2 gap-4">
           {HOW_FAIR.map((item, i) => (
             <div key={i} className="flex items-start gap-4 bg-white rounded-2xl p-5 card-shadow border border-slate-100">
-              <span className="text-2xl flex-shrink-0">{item.icon}</span>
+              <span className="text-2xl flex-shrink-0" aria-hidden="true">{item.icon}</span>
               <div>
                 <p className="font-bold text-slate-900 text-sm mb-1">{item.title}</p>
                 <p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p>
@@ -107,14 +107,14 @@ export default function AboutECIScreen() {
       </div>
 
       {/* Historical note */}
-      <div className="rounded-3xl p-8 text-center" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
-        <p className="text-4xl mb-3">🏛️</p>
-        <h3 className="text-xl font-extrabold text-slate-900 mb-2" style={{ fontFamily: 'Outfit' }}>A Legacy of Democracy</h3>
+      <div role="region" aria-labelledby="legacy-heading" className="rounded-3xl p-8 text-center" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
+        <p className="text-4xl mb-3" aria-hidden="true">🏛️</p>
+        <h3 id="legacy-heading" className="text-xl font-extrabold text-slate-900 mb-2" style={{ fontFamily: 'Outfit' }}>A Legacy of Democracy</h3>
         <p className="text-slate-600 text-sm max-w-xl mx-auto leading-relaxed">
           India's first general election in 1951–52 was conducted with 173 million voters and 4,500 seats across 3 levels of government. T.N. Seshan (CEC 1990–96) transformed ECI into a formidable institution by vigorously enforcing the Model Code of Conduct. Today, the ECI is recognized worldwide as a model election management body.
         </p>
         <a href="https://eci.gov.in" target="_blank" rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 mt-5 px-6 py-2.5 rounded-xl font-bold text-white text-sm"
+          className="inline-flex items-center gap-2 mt-5 px-6 py-2.5 rounded-xl font-bold text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
           style={{ background: '#138808' }}>
           Visit eci.gov.in →
         </a>

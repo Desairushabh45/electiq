@@ -137,33 +137,36 @@ const FloatingChatbot = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="mb-4 w-[340px] sm:w-[420px] h-[580px] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden"
+        <div 
+          role="dialog"
+          aria-label="AI Chat Assistant"
+          className="mb-4 w-[340px] sm:w-[420px] h-[580px] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden"
           style={{ animation: 'slideUp 0.25s ease-out' }}>
 
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-900 to-blue-700 text-white p-4 flex justify-between items-center flex-shrink-0">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 p-2 rounded-full">
-                <Bot size={20} className="text-white" />
+                <Bot size={20} className="text-white" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="font-semibold text-white leading-tight">ElectIQ India 🇮🇳</h3>
                 <p className="text-xs text-blue-200 flex items-center gap-1">
-                  <Sparkles size={10} /> भारतीय चुनाव AI · Powered by Gemini
+                  <Sparkles size={10} aria-hidden="true" /> भारतीय चुनाव AI · Powered by Gemini
                 </p>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-white hover:bg-white/20 p-1.5 rounded-lg transition-colors"
+              className="text-white hover:bg-white/20 p-1.5 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-white"
               aria-label="Close chat"
             >
-              <X size={20} />
+              <X size={20} aria-hidden="true" />
             </button>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 bg-slate-50 p-4 overflow-y-auto flex flex-col gap-3">
+          <div aria-live="polite" className="flex-1 bg-slate-50 p-4 overflow-y-auto flex flex-col gap-3">
             {messages.map((msg, i) => (
               <div
                 key={i}
@@ -171,7 +174,7 @@ const FloatingChatbot = () => {
               >
                 {msg.role === 'ai' && (
                   <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
-                    <Bot size={14} className="text-blue-700" />
+                    <Bot size={14} className="text-blue-700" aria-hidden="true" />
                   </div>
                 )}
                 <div
@@ -188,7 +191,7 @@ const FloatingChatbot = () => {
             {isLoading && (
               <div className="flex gap-2 self-start max-w-[90%]">
                 <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
-                  <Bot size={14} className="text-blue-700" />
+                  <Bot size={14} className="text-blue-700" aria-hidden="true" />
                 </div>
                 <div className="bg-white border border-slate-200 rounded-2xl rounded-tl-sm shadow-sm px-4">
                   <TypingDots />
@@ -199,14 +202,14 @@ const FloatingChatbot = () => {
             {/* Suggestions */}
             {showSuggestions && !isLoading && (
               <div className="mt-2 space-y-2">
-                <p className="text-xs text-slate-400 font-medium px-1 flex items-center gap-1">
-                  <ChevronDown size={12} /> Try asking:
+                <p className="text-xs text-slate-500 font-medium px-1 flex items-center gap-1">
+                  <ChevronDown size={12} aria-hidden="true" /> Try asking:
                 </p>
                 {SUGGESTIONS.map((s, i) => (
                   <button
                     key={i}
                     onClick={() => sendMessage(s)}
-                    className="w-full text-left text-xs text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-100 px-3 py-2 rounded-lg transition-colors"
+                    className="w-full text-left text-xs text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-100 px-3 py-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     {s}
                   </button>
@@ -227,19 +230,22 @@ const FloatingChatbot = () => {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Ask about elections..."
+                aria-label="Type your message"
                 disabled={isLoading}
                 className="flex-1 bg-slate-100 border border-slate-200 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-xl px-4 py-2.5 text-sm outline-none transition-all text-slate-800 disabled:opacity-60"
               />
               <button
                 onClick={() => sendMessage(input)}
                 disabled={isLoading || !input.trim()}
-                className="bg-blue-900 hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2.5 rounded-xl shadow-sm transition-all hover:shadow-md"
+                className="bg-blue-900 hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2.5 rounded-xl shadow-sm transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
                 aria-label="Send message"
               >
-                <Send size={18} />
+                <Send size={18} aria-hidden="true" />
               </button>
             </div>
-            <p className="text-xs text-slate-400 text-center mt-2">ElectIQ 🇮🇳 · Non-partisan · निष्पक्ष जानकारी</p>
+            <p className="text-xs text-slate-500 text-center mt-2">
+              ElectIQ 🇮🇳 · Non-partisan · <span lang="hi">निष्पक्ष जानकारी</span>
+            </p>
           </div>
         </div>
       )}

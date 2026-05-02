@@ -83,7 +83,7 @@ const quizQuestions = [
 
 const getRank = (score, total) => {
   const pct = (score / total) * 100;
-  if (pct === 100) return { label: 'भारत रत्न — Election Expert! 🏆', color: 'text-yellow-600' };
+  if (pct === 100) return { label: <span><span lang="hi">भारत रत्न</span> — Election Expert! 🏆</span>, color: 'text-yellow-600' };
   if (pct >= 71) return { label: 'Lok Sabha Scholar 🏛️', color: 'text-blue-700' };
   if (pct >= 43) return { label: 'Engaged Voter 🗳️', color: 'text-green-700' };
   return { label: 'Naagrik Shagird (Civic Learner) 📚', color: 'text-orange-600' };
@@ -129,11 +129,11 @@ const ElectionQuiz = () => {
   if (showResults) {
     return (
       <section id="quiz" className="w-full bg-white rounded-2xl shadow-md border border-slate-100 p-8 md:p-12 text-center">
-        <Award size={72} className="mx-auto text-yellow-500 mb-6" />
+        <Award size={72} className="mx-auto text-yellow-500 mb-6" aria-hidden="true" />
         <h2 className="text-3xl md:text-4xl text-slate-900 font-bold mb-2">Quiz Complete! 🇮🇳</h2>
         <p className="text-slate-500 mb-8">Here's how you did on India's election knowledge quiz</p>
 
-        <div className="bg-gradient-to-br from-orange-50 to-blue-50 rounded-2xl p-8 max-w-lg mx-auto mb-8 border border-orange-100">
+        <div role="status" className="bg-gradient-to-br from-orange-50 to-blue-50 rounded-2xl p-8 max-w-lg mx-auto mb-8 border border-orange-100">
           <p className="text-lg text-slate-600 mb-1">Your Score</p>
           <p className="text-6xl font-extrabold text-india-navy mb-3">{score}<span className="text-2xl text-slate-400 font-normal"> / {quizQuestions.length}</span></p>
 
@@ -152,7 +152,7 @@ const ElectionQuiz = () => {
           onClick={resetQuiz}
           className="bg-india-navy text-white px-8 py-3 rounded-xl font-semibold shadow-md hover:bg-blue-900 transition-colors flex items-center justify-center gap-2 mx-auto"
         >
-          <RefreshCcw size={18} /> Retake Quiz
+          <RefreshCcw size={18} aria-hidden="true" /> Retake Quiz
         </button>
       </section>
     );
@@ -182,7 +182,7 @@ const ElectionQuiz = () => {
           />
         </div>
 
-        <h3 className="text-xl md:text-2xl text-slate-800 font-semibold mb-6 leading-relaxed">
+        <h3 id="question-text" className="text-xl md:text-2xl text-slate-800 font-semibold mb-6 leading-relaxed">
           {q.question}
         </h3>
 
@@ -193,7 +193,7 @@ const ElectionQuiz = () => {
             const showCorrect  = hasAnswered && isCorrect;
             const showIncorrect = hasAnswered && isSelected && !isCorrect;
 
-            let cls = "w-full text-left p-4 rounded-xl border-2 transition-all font-medium flex justify-between items-center ";
+            let cls = "w-full text-left p-4 rounded-xl border-2 transition-all font-medium flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-blue-500 ";
             if (!hasAnswered) {
               cls += "bg-slate-50 border-slate-200 text-slate-700 hover:border-saffron-400 hover:bg-orange-50 cursor-pointer";
             } else if (showCorrect) {
@@ -205,10 +205,17 @@ const ElectionQuiz = () => {
             }
 
             return (
-              <button key={index} onClick={() => handleOptionClick(index)} disabled={hasAnswered} className={cls}>
+              <button 
+                key={index} 
+                onClick={() => handleOptionClick(index)} 
+                disabled={hasAnswered} 
+                className={cls}
+                aria-label={`Option ${index + 1}: ${option}`}
+                aria-describedby="question-text"
+              >
                 <span>{option}</span>
-                {showCorrect  && <CheckCircle2 className="text-green-600 flex-shrink-0" size={22} />}
-                {showIncorrect && <XCircle className="text-red-600 flex-shrink-0" size={22} />}
+                {showCorrect  && <CheckCircle2 className="text-green-600 flex-shrink-0" size={22} aria-hidden="true" />}
+                {showIncorrect && <XCircle className="text-red-600 flex-shrink-0" size={22} aria-hidden="true" />}
               </button>
             );
           })}
@@ -216,7 +223,7 @@ const ElectionQuiz = () => {
 
         {/* Explanation after answering */}
         {hasAnswered && (
-          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-800 leading-relaxed">
+          <div aria-live="polite" className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-800 leading-relaxed">
             <strong>💡 Explanation:</strong> {q.explanation}
           </div>
         )}
@@ -225,7 +232,7 @@ const ElectionQuiz = () => {
           <div className="flex justify-end">
             <button
               onClick={handleNextQuestion}
-              className="bg-india-navy text-white px-8 py-3 rounded-xl font-semibold shadow-md hover:bg-blue-900 transition-colors"
+              className="bg-india-navy text-white px-8 py-3 rounded-xl font-semibold shadow-md hover:bg-blue-900 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               {currentQuestion < quizQuestions.length - 1 ? 'Next Question →' : 'View Results 🏆'}
             </button>

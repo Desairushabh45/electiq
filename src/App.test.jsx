@@ -4,6 +4,7 @@ import App from './App'
 
 vi.mock('./firebase', () => ({
   trackEvent: vi.fn(),
+  saveToRTDB: vi.fn(),
   analytics: {},
   default: {},
 }))

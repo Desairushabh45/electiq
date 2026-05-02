@@ -11,7 +11,7 @@ const Hero = () => {
       </div>
 
       <div className="inline-flex items-center gap-2 bg-saffron-50 border border-saffron-200 text-saffron-700 px-4 py-2 rounded-full font-semibold text-sm">
-        🗳️ <span>भारत का चुनाव मार्गदर्शक · India's Election Guide</span>
+        🗳️ <span><span lang="hi">भारत का चुनाव मार्गदर्शक</span> · India's Election Guide</span>
       </div>
 
       <h1 className="text-5xl lg:text-6xl font-extrabold max-w-4xl tracking-tight leading-tight">
@@ -28,13 +28,13 @@ const Hero = () => {
       <div className="flex flex-wrap justify-center gap-4 mt-4">
         <button
           onClick={() => document.getElementById('timeline').scrollIntoView({ behavior: 'smooth' })}
-          className="bg-india-navy text-white px-8 py-4 text-lg rounded-lg font-semibold shadow-md hover:bg-blue-900 hover:shadow-lg transition-all flex items-center gap-2"
+          className="bg-india-navy text-white px-8 py-4 text-lg rounded-lg font-semibold shadow-md hover:bg-blue-900 hover:shadow-lg transition-all flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
-          Explore Timeline <ArrowRight size={20} />
+          Explore Timeline <ArrowRight size={20} aria-hidden="true" />
         </button>
         <button
           onClick={() => document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' })}
-          className="bg-white text-india-navy border-2 border-blue-200 px-8 py-4 text-lg rounded-lg font-semibold shadow-sm hover:border-india-navy hover:bg-blue-50 transition-all"
+          className="bg-white text-india-navy border-2 border-blue-200 px-8 py-4 text-lg rounded-lg font-semibold shadow-sm hover:border-india-navy hover:bg-blue-50 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
           Take the Quiz 📝
         </button>

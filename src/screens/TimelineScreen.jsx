@@ -63,15 +63,15 @@ export default function TimelineScreen() {
   const [active, setActive] = useState(null);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
+    <div id="main-content" role="main" className="max-w-4xl mx-auto px-4 py-12">
       {/* Header */}
-      <div className="text-center mb-12">
+      <div role="region" aria-labelledby="timeline-heading" className="text-center mb-12">
         <div className="inline-block px-4 py-1.5 rounded-full text-sm font-bold mb-4 text-white"
           style={{ background: '#FF9933' }}>
           8 Steps · India's Election Process
         </div>
-        <h1 className="section-heading text-4xl md:text-5xl mb-4">
-          भारतीय चुनाव यात्रा
+        <h1 id="timeline-heading" className="section-heading text-4xl md:text-5xl mb-4">
+          <span lang="hi">भारतीय चुनाव यात्रा</span>
           <br /><span className="text-3xl md:text-4xl text-slate-600 font-bold">Indian Election Timeline</span>
         </h1>
         <p className="text-slate-500 text-lg max-w-xl mx-auto">
@@ -80,7 +80,7 @@ export default function TimelineScreen() {
       </div>
 
       {/* Timeline */}
-      <div className="relative">
+      <div role="list" className="relative">
         {/* Vertical connector line */}
         <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-slate-200"
           style={{ transform: 'translateX(-50%)' }} />
@@ -91,7 +91,7 @@ export default function TimelineScreen() {
             const isOpen = active === step.num;
 
             return (
-              <div key={step.num}
+              <div role="listitem" key={step.num}
                 className={`relative flex items-start gap-4 md:gap-0 ${isRight ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
 
                 {/* Step circle — centered on desktop */}
@@ -103,14 +103,16 @@ export default function TimelineScreen() {
                     boxShadow: `0 0 0 4px white, 0 0 0 6px ${step.color}40`,
                     fontSize: 20,
                   }}>
-                  {step.emoji}
-                </div>
+                    <span aria-hidden="true">{step.emoji}</span>
+                  </div>
 
                 {/* Card */}
                 <div className={`flex-1 ml-4 md:ml-0 ${isRight ? 'md:pr-10' : 'md:pl-10'}`}>
                   <button
                     onClick={() => setActive(isOpen ? null : step.num)}
-                    className="w-full text-left rounded-2xl border-2 p-5 transition-all hover:shadow-md"
+                    aria-expanded={isOpen}
+                    aria-controls={`step-content-${step.num}`}
+                    className="w-full text-left rounded-2xl border-2 p-5 transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     style={{
                       background: isOpen ? step.bg : 'white',
                       borderColor: isOpen ? step.color : '#e2e8f0',
@@ -128,14 +130,14 @@ export default function TimelineScreen() {
                         </h3>
                         <p className="text-sm font-medium mt-0.5" style={{ color: step.color }}>{step.sub}</p>
                       </div>
-                      <span className="text-slate-400 text-xl mt-1">{isOpen ? '▲' : '▼'}</span>
+                      <span className="text-slate-400 text-xl mt-1" aria-hidden="true">{isOpen ? '▲' : '▼'}</span>
                     </div>
 
                     {isOpen && (
-                      <div className="mt-4 pt-4 border-t border-slate-200 space-y-3">
+                      <div id={`step-content-${step.num}`} className="mt-4 pt-4 border-t border-slate-200 space-y-3">
                         <p className="text-slate-700 text-sm leading-relaxed">{step.detail}</p>
                         <div className="flex items-start gap-2 p-3 rounded-xl" style={{ background: step.color + '15' }}>
-                          <span className="text-base flex-shrink-0">💡</span>
+                          <span className="text-base flex-shrink-0" aria-hidden="true">💡</span>
                           <p className="text-xs leading-relaxed font-medium" style={{ color: step.color === '#138808' ? '#166534' : '#1e3a8a' }}>
                             {step.fact}
                           </p>
@@ -151,9 +153,9 @@ export default function TimelineScreen() {
       </div>
 
       {/* Bottom CTA */}
-      <div className="mt-16 text-center p-8 rounded-3xl" style={{ background: '#fff7ed' }}>
-        <p className="text-2xl mb-2">🎓</p>
-        <h3 className="font-extrabold text-xl text-slate-900 mb-2">Ready to Test Your Knowledge?</h3>
+      <div role="region" aria-labelledby="cta-heading" className="mt-16 text-center p-8 rounded-3xl" style={{ background: '#fff7ed' }}>
+        <p className="text-2xl mb-2" aria-hidden="true">🎓</p>
+        <h3 id="cta-heading" className="font-extrabold text-xl text-slate-900 mb-2">Ready to Test Your Knowledge?</h3>
         <p className="text-slate-500 text-sm mb-4">Now that you know how elections work, take the quiz!</p>
       </div>
     </div>
