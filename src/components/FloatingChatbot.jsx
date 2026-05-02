@@ -25,6 +25,26 @@ const SUGGESTIONS = [
 
 const genAI = GEMINI_API_KEY ? new GoogleGenerativeAI(GEMINI_API_KEY) : null;
 
+/**
+ * Translates English text to Hindi via Google Cloud Translation API
+ * @param {string} text - Text to translate
+ * @returns {Promise<string>} Hindi translation
+ */
+const translateToHindi = async (text) => {
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+  if (!apiKey) throw new Error('Translation API key not configured');
+  const response = await fetch(
+    `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ q: text, target: 'hi', source: 'en', format: 'text' })
+    }
+  );
+  const data = await response.json();
+  return data.data.translations[0].translatedText;
+};
+
 const TypingDots = () => (
   <div className="flex items-center gap-1 px-1 py-2">
     <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
@@ -48,6 +68,8 @@ const FloatingChatbot = React.memo(function FloatingChatbot() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [translations, setTranslations] = useState({});
+  const [translating, setTranslating] = useState({});
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -187,21 +209,52 @@ const FloatingChatbot = React.memo(function FloatingChatbot() {
             {messages.map((msg, i) => (
               <div
                 key={i}
-                className={`flex gap-2 max-w-[90%] ${msg.role === 'user' ? 'self-end flex-row-reverse' : 'self-start'}`}
+                className={`flex gap-2 max-w-[90%] ${msg.role === 'user' ? 'self-end flex-row-reverse' : 'self-start flex-col'}`}
               >
-                {msg.role === 'ai' && (
-                  <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
-                    <Bot size={14} className="text-blue-700" aria-hidden="true" />
+                <div className={`flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                  {msg.role === 'ai' && (
+                    <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
+                      <Bot size={14} className="text-blue-700" aria-hidden="true" />
+                    </div>
+                  )}
+                  <div
+                    className={`p-3 rounded-2xl text-sm leading-relaxed ${
+                      msg.role === 'user'
+                        ? 'bg-blue-900 text-white rounded-tr-sm'
+                        : 'bg-white text-slate-800 border border-slate-200 rounded-tl-sm shadow-sm'
+                    }`}
+                    dangerouslySetInnerHTML={{ __html: formatText(msg.text) }}
+                  />
+                </div>
+                {msg.role === 'ai' && i > 0 && (
+                  <div className="ml-9">
+                    {!translations[i] ? (
+                      <button
+                        onClick={async () => {
+                          setTranslating(t => ({ ...t, [i]: true }));
+                          try {
+                            const hindi = await translateToHindi(msg.text.replace(/\*\*/g, ''));
+                            setTranslations(t => ({ ...t, [i]: hindi }));
+                          } catch {
+                            setTranslations(t => ({ ...t, [i]: 'अनुवाद उपलब्ध नहीं है।' }));
+                          } finally {
+                            setTranslating(t => ({ ...t, [i]: false }));
+                          }
+                        }}
+                        disabled={translating[i]}
+                        className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 mt-1 disabled:opacity-50"
+                        aria-label="Translate to Hindi"
+                      >
+                        {translating[i] ? '⏳ Translating...' : '🔄 Translate to Hindi'}
+                      </button>
+                    ) : (
+                      <div className="mt-1 p-2 bg-orange-50 border border-orange-100 rounded-lg text-xs text-slate-700" lang="hi">
+                        <p className="font-bold text-orange-600 mb-1 text-[10px] uppercase tracking-wide">हिंदी अनुवाद</p>
+                        <p>{translations[i]}</p>
+                      </div>
+                    )}
                   </div>
                 )}
-                <div
-                  className={`p-3 rounded-2xl text-sm leading-relaxed ${
-                    msg.role === 'user'
-                      ? 'bg-blue-900 text-white rounded-tr-sm'
-                      : 'bg-white text-slate-800 border border-slate-200 rounded-tl-sm shadow-sm'
-                  }`}
-                  dangerouslySetInnerHTML={{ __html: formatText(msg.text) }}
-                />
               </div>
             ))}
 

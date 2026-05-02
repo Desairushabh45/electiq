@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { BookOpen, Clock, HelpCircle, Info, ArrowRight, Users, Vote, Award } from 'lucide-react';
 import { SCREENS } from '../constants';
@@ -39,6 +40,14 @@ const STATS = [
  * @returns {JSX.Element} Landing page with feature cards and stats
  */
 export default function HomeScreen({ nav, screen }) {
+  const [electionFact, setElectionFact] = useState('');
+
+  useEffect(() => {
+    fetch('https://us-central1-electiq-ffd78.cloudfunctions.net/getElectionFact')
+      .then(r => r.json())
+      .then(data => setElectionFact(data.fact))
+      .catch(() => setElectionFact('India has 96.8 crore registered voters'));
+  }, []);
   return (
     <div id="main-content" role="main">
       {/* ── HERO ── */}
@@ -138,6 +147,21 @@ export default function HomeScreen({ nav, screen }) {
           })}
         </div>
       </section>
+
+      {/* ── DAILY ELECTION FACT (Cloud Functions) ── */}
+      {electionFact && (
+        <section role="region" aria-labelledby="fact-heading" className="max-w-6xl mx-auto px-6 pb-8">
+          <div className="rounded-2xl p-5 border-2 border-saffron-200 flex items-start gap-4"
+            style={{ background: 'linear-gradient(135deg, #fffbeb, #fff7ed)' }}>
+            <span className="text-3xl flex-shrink-0" aria-hidden="true">💡</span>
+            <div>
+              <p className="text-xs font-bold tracking-widest text-saffron-600 uppercase mb-1" id="fact-heading">Did You Know?</p>
+              <p className="text-slate-800 font-semibold text-sm leading-relaxed">{electionFact}</p>
+              <p className="text-xs text-slate-400 mt-1">Powered by Firebase Cloud Functions</p>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── AI CTA BANNER ── */}
       <section role="region" aria-labelledby="ai-cta-heading" className="max-w-6xl mx-auto px-6 pb-20">

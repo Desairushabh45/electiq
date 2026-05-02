@@ -4,6 +4,8 @@ import { getAnalytics, logEvent } from 'firebase/analytics';
 import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from 'firebase/firestore';
 import { getPerformance, trace } from 'firebase/performance';
 import { getDatabase, ref, push, onValue } from 'firebase/database';
+import { getRemoteConfig, fetchAndActivate, getValue } from 'firebase/remote-config';
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -20,6 +22,10 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 const rtdb = getDatabase(app);
+const storage = getStorage(app);
+
+const remoteConfig = getRemoteConfig(app);
+remoteConfig.settings.minimumFetchIntervalMillis = 3600000;
 
 let perf = null;
 try {
@@ -109,6 +115,38 @@ export const saveToRTDB = (path, data) => {
   }
 };
 
-export { analytics, db, rtdb, perf };
+export { analytics, db, rtdb, perf, storage, remoteConfig };
 export default app;
+
+/**
+ * Fetches a value from Firebase Remote Config
+ * @param {string} key - Remote Config parameter key
+ * @returns {Promise<string|null>} The config value or null on error
+ */
+export const getRemoteValue = async (key) => {
+  try {
+    await fetchAndActivate(remoteConfig);
+    return getValue(remoteConfig, key).asString();
+  } catch (e) {
+    console.warn('Remote config error:', e.message);
+    return null;
+  }
+};
+
+/**
+ * Uploads a file to Firebase Storage
+ * @param {File} file - The file to upload
+ * @param {string} path - Destination storage path
+ * @returns {Promise<string|null>} The download URL or null on error
+ */
+export const uploadFile = async (file, path) => {
+  try {
+    const ref = storageRef(storage, path);
+    await uploadBytes(ref, file);
+    return await getDownloadURL(ref);
+  } catch (e) {
+    console.warn('Storage error:', e.message);
+    return null;
+  }
+};
 
