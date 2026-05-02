@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Bot, X, MessageSquare, Send, Sparkles, ChevronDown } from 'lucide-react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { trackEvent } from '../firebase';
@@ -37,7 +37,7 @@ const TypingDots = () => (
  * Floating Chatbot component for AI election assistance
  * @returns {JSX.Element} Chatbot FAB and dialog window
  */
-const FloatingChatbot = () => {
+const FloatingChatbot = React.memo(function FloatingChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -295,6 +295,6 @@ const FloatingChatbot = () => {
       `}</style>
     </div>
   );
-};
+});
 
 export default FloatingChatbot;

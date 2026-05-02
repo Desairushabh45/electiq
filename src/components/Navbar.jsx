@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { BookOpen, Clock, HelpCircle, Info, Menu, X } from 'lucide-react';
 import { SCREENS } from '../constants';
@@ -17,7 +17,7 @@ const LINKS = [
  * @param {function} nav - navigation handler to change screens
  * @returns {JSX.Element} Fixed top navigation bar
  */
-export default function Navbar({ screen, nav }) {
+const Navbar = React.memo(function Navbar({ screen, nav }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -93,7 +93,9 @@ export default function Navbar({ screen, nav }) {
       )}
     </header>
   );
-}
+});
+
+export default Navbar;
 
 Navbar.propTypes = {
   screen: PropTypes.string.isRequired,

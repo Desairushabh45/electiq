@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Vote, ArrowRight } from 'lucide-react';
 
@@ -7,7 +8,7 @@ import { Vote, ArrowRight } from 'lucide-react';
  * @param {function} nav - navigation handler to change screens
  * @returns {JSX.Element} Hero banner with main CTAs
  */
-const Hero = ({ nav }) => {
+const Hero = React.memo(function Hero({ nav }) {
   return (
     <section className="text-center pt-8 pb-6 flex flex-col items-center gap-6">
       {/* Indian tri-color accent bar */}
@@ -62,7 +63,7 @@ const Hero = ({ nav }) => {
       </div>
     </section>
   );
-};
+});
 
 Hero.propTypes = {
   nav: PropTypes.func.isRequired,

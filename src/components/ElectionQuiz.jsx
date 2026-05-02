@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Award, RefreshCcw, CheckCircle2, XCircle } from 'lucide-react';
 
 const quizQuestions = [
@@ -96,34 +96,36 @@ const ElectionQuiz = () => {
   const [showResults, setShowResults] = useState(false);
   const [hasAnswered, setHasAnswered] = useState(false);
 
-  const handleOptionClick = (index) => {
+  const questions = useMemo(() => quizQuestions, []);
+
+  const handleOptionClick = useCallback((index) => {
     if (hasAnswered) return;
     setSelectedOption(index);
     setHasAnswered(true);
-    if (index === quizQuestions[currentQuestion].answer) {
+    if (index === questions[currentQuestion].answer) {
       setScore((prev) => prev + 1);
     }
-  };
+  }, [hasAnswered, currentQuestion, questions]);
 
-  const handleNextQuestion = () => {
-    if (currentQuestion < quizQuestions.length - 1) {
+  const handleNextQuestion = useCallback(() => {
+    if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedOption(null);
       setHasAnswered(false);
     } else {
       setShowResults(true);
     }
-  };
+  }, [currentQuestion, questions.length]);
 
-  const resetQuiz = () => {
+  const resetQuiz = useCallback(() => {
     setCurrentQuestion(0);
     setSelectedOption(null);
     setScore(0);
     setShowResults(false);
     setHasAnswered(false);
-  };
+  }, []);
 
-  const q = quizQuestions[currentQuestion];
+  const q = questions[currentQuestion];
   const rank = getRank(score, quizQuestions.length);
 
   if (showResults) {

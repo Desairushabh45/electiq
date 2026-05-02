@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { CheckCircle2, XCircle, RefreshCcw, Award } from 'lucide-react';
 
@@ -69,18 +69,23 @@ export default function QuizScreen({ nav, screen }) {
   const q = QUESTIONS[idx];
   const rank = RANKS.find(r => score >= r.min);
 
-  const pick = (i) => {
+  const scorePercentage = useMemo(() => 
+    Math.round((score / QUESTIONS.length) * 100),
+    [score]
+  );
+
+  const pick = useCallback((i) => {
     if (chosen !== null) return;
     setChosen(i);
     if (i === q.answer) setScore(s => s + 1);
-  };
+  }, [chosen, q.answer]);
 
-  const next = () => {
+  const next = useCallback(() => {
     if (idx < QUESTIONS.length - 1) { setIdx(i => i + 1); setChosen(null); }
     else setDone(true);
-  };
+  }, [idx]);
 
-  const reset = () => { setIdx(0); setChosen(null); setScore(0); setDone(false); };
+  const reset = useCallback(() => { setIdx(0); setChosen(null); setScore(0); setDone(false); }, []);
 
   if (done) return (
     <div id="main-content" role="main" className="max-w-xl mx-auto px-4 py-16 text-center">

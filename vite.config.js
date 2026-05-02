@@ -9,4 +9,22 @@ export default defineConfig({
     setupFiles: ['./src/setupTests.js'],
     globals: true,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+            return 'vendor';
+          }
+          if (id.includes('node_modules/firebase')) {
+            return 'firebase';
+          }
+          if (id.includes('node_modules/@google/generative-ai')) {
+            return 'gemini';
+          }
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000,
+  }
 })

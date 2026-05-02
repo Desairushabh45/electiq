@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 /**
@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
  * @param {React.ReactNode} props.children - child components to wrap
  * @returns {JSX.Element} Children or fallback error UI
  */
-export default class ErrorBoundary extends Component {
+class ErrorBoundaryBase extends Component {
   state = { hasError: false }
   static getDerivedStateFromError() { return { hasError: true } }
   render() {
@@ -20,6 +20,9 @@ export default class ErrorBoundary extends Component {
     return this.props.children
   }
 }
+
+const ErrorBoundary = React.memo(ErrorBoundaryBase);
+export default ErrorBoundary;
 
 ErrorBoundary.propTypes = {
   children: PropTypes.node.isRequired,

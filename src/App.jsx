@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense, useCallback } from 'react';
 import { SCREENS } from './constants';
 import { trackEvent, saveToRTDB } from './firebase';
 import Navbar from './components/Navbar';
 import FloatingChatbot from './components/FloatingChatbot';
-import HomeScreen from './screens/HomeScreen';
-import TimelineScreen from './screens/TimelineScreen';
-import HowItWorksScreen from './screens/HowItWorksScreen';
-import QuizScreen from './screens/QuizScreen';
-import AboutECIScreen from './screens/AboutECIScreen';
 import ErrorBoundary from './components/ErrorBoundary';
+
+const HomeScreen = lazy(() => import('./screens/HomeScreen'));
+const TimelineScreen = lazy(() => import('./screens/TimelineScreen'));
+const HowItWorksScreen = lazy(() => import('./screens/HowItWorksScreen'));
+const QuizScreen = lazy(() => import('./screens/QuizScreen'));
+const AboutECIScreen = lazy(() => import('./screens/AboutECIScreen'));
 
 /**
  * App component - main application container
@@ -17,14 +18,14 @@ import ErrorBoundary from './components/ErrorBoundary';
 export default function App() {
   const [screen, setScreen] = useState(SCREENS.HOME);
 
-  const nav = (s) => {
+  const nav = useCallback((s) => {
     setScreen(s);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     trackEvent('page_view', { page: s });
     trackEvent('screen_change', { from: screen, to: s });
     saveToRTDB('page_views', { page: s });
-  };
+  }, [screen]);
 
   const screenProps = { nav, screen };
 
@@ -37,11 +38,17 @@ export default function App() {
       <Navbar screen={screen} nav={nav} />
       <div className="pt-16">
         <div key={screen} className="page-animate">
-          {screen === SCREENS.HOME && <HomeScreen {...screenProps} />}
-          {screen === SCREENS.TIMELINE && <TimelineScreen {...screenProps} />}
-          {screen === SCREENS.HOW_IT_WORKS && <HowItWorksScreen {...screenProps} />}
-          {screen === SCREENS.QUIZ && <QuizScreen {...screenProps} />}
-          {screen === SCREENS.ABOUT_ECI && <AboutECIScreen {...screenProps} />}
+          <Suspense fallback={
+            <div className="flex items-center justify-center min-h-screen">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-900"></div>
+            </div>
+          }>
+            {screen === SCREENS.HOME && <HomeScreen {...screenProps} />}
+            {screen === SCREENS.TIMELINE && <TimelineScreen {...screenProps} />}
+            {screen === SCREENS.HOW_IT_WORKS && <HowItWorksScreen {...screenProps} />}
+            {screen === SCREENS.QUIZ && <QuizScreen {...screenProps} />}
+            {screen === SCREENS.ABOUT_ECI && <AboutECIScreen {...screenProps} />}
+          </Suspense>
         </div>
       </div>
       <FloatingChatbot />

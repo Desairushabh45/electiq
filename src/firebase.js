@@ -2,7 +2,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';
 import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from 'firebase/firestore';
-import { getPerformance } from 'firebase/performance';
+import { getPerformance, trace } from 'firebase/performance';
 import { getDatabase, ref, push, onValue } from 'firebase/database';
 
 const firebaseConfig = {
@@ -59,6 +59,29 @@ export const saveQuizScore = async (score, total) => {
   } catch (e) {
     console.warn('[Firestore] Score not saved:', e.message);
   }
+};
+
+/**
+ * Starts a performance trace for page loading
+ * @param {string} pageName - name of the page
+ * @returns {object|null} The trace object or null if performance is disabled
+ */
+export const startPageLoadTrace = (pageName) => {
+  if (!perf) return null;
+  const t = trace(perf, `page_load_${pageName}`);
+  t.start();
+  return t;
+};
+
+/**
+ * Starts a performance trace for quiz completion
+ * @returns {object|null} The trace object or null if performance is disabled
+ */
+export const startQuizCompletionTrace = () => {
+  if (!perf) return null;
+  const t = trace(perf, 'quiz_completion');
+  t.start();
+  return t;
 };
 
 export const getQuizScores = async () => {

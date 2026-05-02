@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import App from './App'
 
@@ -32,24 +32,24 @@ describe('App', () => {
     render(<App />)
     expect(screen.getByRole('banner')).toBeInTheDocument()
   })
-  it('renders the ElectIQ brand', () => {
+  it('renders the ElectIQ brand', async () => {
     render(<App />)
-    expect(screen.getAllByText(/ElectIQ/i).length).toBeGreaterThan(0)
+    await waitFor(() => expect(screen.getAllByText(/ElectIQ/i).length).toBeGreaterThan(0))
   })
-  it('renders main content area', () => {
+  it('renders main content area', async () => {
     render(<App />)
-    expect(screen.getByRole('main')).toBeInTheDocument()
+    await waitFor(() => expect(screen.getByRole('main')).toBeInTheDocument())
   })
   it('renders the floating chatbot FAB', () => {
     render(<App />)
     expect(screen.getByRole('button', { name: /Toggle AI Assistant/i })).toBeInTheDocument()
   })
-  it('Test navigation between pages', () => {
+  it('Test navigation between pages', async () => {
     render(<App />)
-    expect(screen.getByText(/Understand Indian Elections/i)).toBeInTheDocument()
+    await waitFor(() => expect(screen.getByText(/Understand Indian Elections/i)).toBeInTheDocument())
     const aboutBtns = screen.getAllByRole('button', { name: /About ECI/i })
     fireEvent.click(aboutBtns[0])
-    expect(screen.getAllByText(/Election Commission/i).length).toBeGreaterThan(0)
+    await waitFor(() => expect(screen.getAllByText(/Election Commission/i).length).toBeGreaterThan(0))
   })
   it('Test quiz can be started', () => {
     render(<App />)
