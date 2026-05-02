@@ -1,5 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';
+import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from 'firebase/firestore';
+import { getPerformance } from 'firebase/performance';
+import { getDatabase, ref, push, onValue } from 'firebase/database';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -9,24 +12,60 @@ const firebaseConfig = {
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
 };
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const db = getFirestore(app);
+const rtdb = getDatabase(app);
 
-/**
- * Log a custom analytics event.
- * @param {string} eventName - GA4 event name
- * @param {object} [params] - optional event params
- */
+let perf = null;
+try {
+  perf = getPerformance(app);
+} catch (e) {
+  console.warn('Performance monitoring not available:', e.message);
+}
+
 export const trackEvent = (eventName, params = {}) => {
   try {
     logEvent(analytics, eventName, params);
   } catch (e) {
-    // Analytics may not be available in some environments
     console.warn('[Analytics] Event not logged:', eventName, e.message);
   }
 };
 
-export { analytics };
+export const saveQuizScore = async (score, total) => {
+  try {
+    await addDoc(collection(db, 'quiz_scores'), {
+      score,
+      total,
+      percentage: Math.round((score / total) * 100),
+      timestamp: serverTimestamp(),
+    });
+  } catch (e) {
+    console.warn('[Firestore] Score not saved:', e.message);
+  }
+};
+
+export const getQuizScores = async () => {
+  try {
+    const snapshot = await getDocs(collection(db, 'quiz_scores'));
+    return snapshot.docs.map(doc => doc.data());
+  } catch (e) {
+    console.warn('[Firestore] Scores not fetched:', e.message);
+    return [];
+  }
+};
+
+export const saveToRTDB = (path, data) => {
+  try {
+    const dbRef = ref(rtdb, path);
+    push(dbRef, { ...data, timestamp: Date.now() });
+  } catch (e) {
+    console.warn('[RTDB] Data not saved:', e.message);
+  }
+};
+
+export { analytics, db, rtdb, perf };
 export default app;
