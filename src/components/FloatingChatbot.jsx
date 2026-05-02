@@ -5,6 +5,15 @@ import { trackEvent } from '../firebase';
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
+const MAX_MESSAGE_LENGTH = 200;
+const sanitizeInput = (text) => text
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/javascript:/gi, '')
+  .replace(/on\w+=/gi, '')
+  .trim()
+  .slice(0, MAX_MESSAGE_LENGTH);
+
 const systemPrompt = "You are ElectIQ, an Indian election education assistant. Help users understand Indian elections, ECI, voting procedures, EVMs, VVPAT, Form 6 voter registration, Lok Sabha, Rajya Sabha, Model Code of Conduct, and democratic processes. Give clear simple educational answers. Add Hindi terms where helpful.";
 
 const SUGGESTIONS = [
@@ -69,8 +78,13 @@ const FloatingChatbot = () => {
   };
 
   const sendMessage = async (userText) => {
-    const trimmed = userText.trim();
+    const trimmed = sanitizeInput(userText);
     if (!trimmed || isLoading) return;
+
+    if (messages.length > 20) {
+      setMessages(prev => [...prev, { role: 'ai', text: '⚠️ Session limit reached. Please refresh to continue.' }]);
+      return;
+    }
 
     setShowSuggestions(false);
     setMessages((prev) => [...prev, { role: 'user', text: trimmed }]);
@@ -227,6 +241,7 @@ const FloatingChatbot = () => {
                 ref={inputRef}
                 type="text"
                 value={input}
+                maxLength={200}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Ask about elections..."
@@ -236,16 +251,21 @@ const FloatingChatbot = () => {
               />
               <button
                 onClick={() => sendMessage(input)}
-                disabled={isLoading || !input.trim()}
+                disabled={isLoading || !input.trim() || input.length > 200}
                 className="bg-blue-900 hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2.5 rounded-xl shadow-sm transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
                 aria-label="Send message"
               >
                 <Send size={18} aria-hidden="true" />
               </button>
             </div>
-            <p className="text-xs text-slate-500 text-center mt-2">
-              ElectIQ 🇮🇳 · Non-partisan · <span lang="hi">निष्पक्ष जानकारी</span>
-            </p>
+            <div className="flex justify-between items-center mt-2">
+              <p className="text-xs text-slate-500 text-center flex-1">
+                ElectIQ 🇮🇳 · Non-partisan · <span lang="hi">निष्पक्ष जानकारी</span>
+              </p>
+              <p className="text-xs text-slate-400 font-medium">
+                {input.length}/200
+              </p>
+            </div>
           </div>
         </div>
       )}

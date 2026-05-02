@@ -8,7 +8,7 @@ import TimelineScreen from './screens/TimelineScreen';
 import HowItWorksScreen from './screens/HowItWorksScreen';
 import QuizScreen from './screens/QuizScreen';
 import AboutECIScreen from './screens/AboutECIScreen';
-
+import ErrorBoundary from './components/ErrorBoundary';
 export default function App() {
   const [screen, setScreen] = useState(SCREENS.HOME);
 
@@ -24,7 +24,8 @@ export default function App() {
   const screenProps = { nav, screen };
 
   return (
-    <div className="min-h-screen bg-white">
+    <ErrorBoundary>
+      <div className="min-h-screen bg-white">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:bg-blue-600 focus:text-white focus:p-3">
         Skip to main content
       </a>
@@ -40,5 +41,6 @@ export default function App() {
       </div>
       <FloatingChatbot />
     </div>
+    </ErrorBoundary>
   );
 }
