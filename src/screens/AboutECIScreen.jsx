@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+import PropTypes from 'prop-types';
+
 const FACTS = [
   { label: 'Established', value: 'Jan 25, 1950', icon: '📅' },
   { label: 'Constitutional Article', value: 'Article 324', icon: '📜' },
@@ -34,7 +37,13 @@ const HOW_FAIR = [
   { icon: '📊', title: 'Observer System', desc: 'ECI appoints independent observers (IAS officers from other states) to monitor every constituency during polling and counting.' },
 ];
 
-export default function AboutECIScreen() {
+/**
+ * AboutECIScreen component - information about the Election Commission
+ * @param {function} nav - navigation handler to change screens
+ * @param {string} screen - currently active screen identifier
+ * @returns {JSX.Element} ECI information page
+ */
+export default function AboutECIScreen({ nav, screen }) {
   return (
     <div id="main-content" role="main" className="max-w-5xl mx-auto px-4 py-12">
       {/* Header */}
@@ -122,3 +131,9 @@ export default function AboutECIScreen() {
     </div>
   );
 }
+
+AboutECIScreen.propTypes = {
+  nav: PropTypes.func.isRequired,
+  screen: PropTypes.string.isRequired,
+};
+

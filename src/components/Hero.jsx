@@ -1,6 +1,13 @@
+/* eslint-disable no-unused-vars */
+import PropTypes from 'prop-types';
 import { Vote, ArrowRight } from 'lucide-react';
 
-const Hero = () => {
+/**
+ * Hero component - top hero section of the landing page
+ * @param {function} nav - navigation handler to change screens
+ * @returns {JSX.Element} Hero banner with main CTAs
+ */
+const Hero = ({ nav }) => {
   return (
     <section className="text-center pt-8 pb-6 flex flex-col items-center gap-6">
       {/* Indian tri-color accent bar */}
@@ -57,4 +64,9 @@ const Hero = () => {
   );
 };
 
+Hero.propTypes = {
+  nav: PropTypes.func.isRequired,
+};
+
 export default Hero;
+

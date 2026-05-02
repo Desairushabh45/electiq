@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { X, Home, Vote, BarChart3, Info, HelpCircle, LogOut, User } from 'lucide-react';
 import { SCREENS } from '../constants';
 
@@ -77,3 +78,4 @@ export default function DrawerMenu({ isOpen, onClose, nav }) {
     </>
   );
 }
+

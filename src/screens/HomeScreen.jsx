@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+import PropTypes from 'prop-types';
 import { BookOpen, Clock, HelpCircle, Info, ArrowRight, Users, Vote, Award } from 'lucide-react';
 import { SCREENS } from '../constants';
 
@@ -30,7 +32,13 @@ const STATS = [
   { icon: Award, value: '1950',    label: 'ECI Established' },
 ];
 
-export default function HomeScreen({ nav }) {
+/**
+ * HomeScreen component - main landing page for ElectIQ
+ * @param {function} nav - navigation handler to change screens
+ * @param {string} screen - currently active screen identifier
+ * @returns {JSX.Element} Landing page with feature cards and stats
+ */
+export default function HomeScreen({ nav, screen }) {
   return (
     <div id="main-content" role="main">
       {/* ── HERO ── */}
@@ -171,3 +179,9 @@ export default function HomeScreen({ nav }) {
     </div>
   );
 }
+
+HomeScreen.propTypes = {
+  nav: PropTypes.func.isRequired,
+  screen: PropTypes.string.isRequired,
+};
+

@@ -9,6 +9,11 @@ import HowItWorksScreen from './screens/HowItWorksScreen';
 import QuizScreen from './screens/QuizScreen';
 import AboutECIScreen from './screens/AboutECIScreen';
 import ErrorBoundary from './components/ErrorBoundary';
+
+/**
+ * App component - main application container
+ * @returns {JSX.Element} Root application element
+ */
 export default function App() {
   const [screen, setScreen] = useState(SCREENS.HOME);
 

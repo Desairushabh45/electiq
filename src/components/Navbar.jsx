@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { BookOpen, Clock, HelpCircle, Info, Menu, X } from 'lucide-react';
 import { SCREENS } from '../constants';
 
@@ -10,6 +11,12 @@ const LINKS = [
   { label: 'About ECI',   screen: SCREENS.ABOUT_ECI,    icon: Info },
 ];
 
+/**
+ * Navbar component - main navigation bar for ElectIQ
+ * @param {string} screen - currently active screen identifier
+ * @param {function} nav - navigation handler to change screens
+ * @returns {JSX.Element} Fixed top navigation bar
+ */
 export default function Navbar({ screen, nav }) {
   const [open, setOpen] = useState(false);
 
@@ -87,3 +94,8 @@ export default function Navbar({ screen, nav }) {
     </header>
   );
 }
+
+Navbar.propTypes = {
+  screen: PropTypes.string.isRequired,
+  nav: PropTypes.func.isRequired,
+};

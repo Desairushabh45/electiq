@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import { ArrowLeft, CheckCircle, AlertTriangle } from 'lucide-react';
 import { CANDIDATES, ELECTION } from '../data/electionData';
@@ -155,3 +156,4 @@ export default function CandidatesScreen({ nav, votes, userVote, castVote }) {
     </div>
   );
 }
+

@@ -5,18 +5,21 @@ import { CANDIDATES } from '../data/electionData';
 const PieChart = ({ data, size = 190 }) => {
   const total = data.reduce((s, d) => s + d.value, 0);
   const cx = size / 2, cy = size / 2, r = size / 2 - 8;
-  let angle = -90;
-  const slices = data.map(d => {
-    const sweep = (d.value / total) * 360;
-    const a1 = (angle * Math.PI) / 180;
-    const a2 = ((angle + sweep) * Math.PI) / 180;
-    const x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
-    const x2 = cx + r * Math.cos(a2), y2 = cy + r * Math.sin(a2);
-    const large = sweep > 180 ? 1 : 0;
-    const path = `M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} Z`;
-    angle += sweep;
-    return { ...d, path };
-  });
+  const { slices } = data.reduce(
+    (acc, d) => {
+      const sweep = (d.value / total) * 360;
+      const a1 = (acc.angle * Math.PI) / 180;
+      const a2 = ((acc.angle + sweep) * Math.PI) / 180;
+      const x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+      const x2 = cx + r * Math.cos(a2), y2 = cy + r * Math.sin(a2);
+      const large = sweep > 180 ? 1 : 0;
+      const path = `M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} Z`;
+      acc.slices.push({ ...d, path });
+      acc.angle += sweep;
+      return acc;
+    },
+    { slices: [], angle: -90 }
+  );
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
       {slices.map((s, i) => <path key={i} d={s.path} fill={s.color} />)}

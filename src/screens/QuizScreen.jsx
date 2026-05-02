@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { CheckCircle2, XCircle, RefreshCcw, Award } from 'lucide-react';
 
 const QUESTIONS = [
@@ -52,7 +54,13 @@ const RANKS = [
   { min: 0, label: <><span lang="hi">नागरिक शागिर्द</span> — Keep Learning 📚</>, color: '#FF9933' },
 ];
 
-export default function QuizScreen() {
+/**
+ * QuizScreen component - interactive election knowledge quiz
+ * @param {function} nav - navigation handler to change screens
+ * @param {string} screen - currently active screen identifier
+ * @returns {JSX.Element} Interactive 6-question quiz
+ */
+export default function QuizScreen({ nav, screen }) {
   const [idx, setIdx]         = useState(0);
   const [chosen, setChosen]   = useState(null);
   const [score, setScore]     = useState(0);
@@ -186,3 +194,9 @@ export default function QuizScreen() {
     </div>
   );
 }
+
+QuizScreen.propTypes = {
+  nav: PropTypes.func.isRequired,
+  screen: PropTypes.string.isRequired,
+};
+

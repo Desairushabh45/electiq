@@ -1,4 +1,12 @@
-import { Component } from 'react'
+import { Component } from 'react';
+import PropTypes from 'prop-types';
+
+/**
+ * ErrorBoundary component - catches JavaScript errors in child components
+ * @param {object} props - component props
+ * @param {React.ReactNode} props.children - child components to wrap
+ * @returns {JSX.Element} Children or fallback error UI
+ */
 export default class ErrorBoundary extends Component {
   state = { hasError: false }
   static getDerivedStateFromError() { return { hasError: true } }
@@ -12,3 +20,7 @@ export default class ErrorBoundary extends Component {
     return this.props.children
   }
 }
+
+ErrorBoundary.propTypes = {
+  children: PropTypes.node.isRequired,
+};

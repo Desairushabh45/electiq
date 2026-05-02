@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';
 import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from 'firebase/firestore';
@@ -27,6 +28,12 @@ try {
   console.warn('Performance monitoring not available:', e.message);
 }
 
+/**
+ * Logs a custom analytics event to Firebase Analytics
+ * @param {string} eventName - GA4 event name
+ * @param {object} params - optional event parameters
+ * @returns {void}
+ */
 export const trackEvent = (eventName, params = {}) => {
   try {
     logEvent(analytics, eventName, params);
@@ -35,6 +42,12 @@ export const trackEvent = (eventName, params = {}) => {
   }
 };
 
+/**
+ * Saves quiz score to Firestore database
+ * @param {number} score - number of correct answers
+ * @param {number} total - total number of questions
+ * @returns {Promise<void>}
+ */
 export const saveQuizScore = async (score, total) => {
   try {
     await addDoc(collection(db, 'quiz_scores'), {
@@ -58,6 +71,12 @@ export const getQuizScores = async () => {
   }
 };
 
+/**
+ * Saves data to Firebase Realtime Database
+ * @param {string} path - database path
+ * @param {object} data - data to save
+ * @returns {void}
+ */
 export const saveToRTDB = (path, data) => {
   try {
     const dbRef = ref(rtdb, path);
@@ -69,3 +88,4 @@ export const saveToRTDB = (path, data) => {
 
 export { analytics, db, rtdb, perf };
 export default app;
+

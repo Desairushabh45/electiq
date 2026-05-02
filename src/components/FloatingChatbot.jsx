@@ -33,6 +33,10 @@ const TypingDots = () => (
   </div>
 );
 
+/**
+ * Floating Chatbot component for AI election assistance
+ * @returns {JSX.Element} Chatbot FAB and dialog window
+ */
 const FloatingChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -94,7 +98,6 @@ const FloatingChatbot = () => {
     trackEvent('chat_message_sent', { message_length: trimmed.length });
 
     try {
-      console.log('API Key loaded:', import.meta.env.VITE_GEMINI_API_KEY ? 'YES - ' + import.meta.env.VITE_GEMINI_API_KEY.slice(0,10) : 'NO - undefined');
       if (!genAI) throw new Error('API key not configured');
 
       const model = genAI.getGenerativeModel({
