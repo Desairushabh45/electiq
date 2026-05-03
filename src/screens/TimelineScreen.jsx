@@ -79,7 +79,7 @@ export default function TimelineScreen({ nav, screen }) {
           8 Steps · India's Election Process
         </div>
         <h1 id="timeline-heading" className="section-heading text-4xl md:text-5xl mb-4">
-          <span lang="hi">भारतीय चुनाव यात्रा</span>
+          <span lang="hi" className="font-hindi">भारतीय चुनाव यात्रा</span>
           <br /><span className="text-3xl md:text-4xl text-slate-600 font-bold">Indian Election Timeline</span>
         </h1>
         <p className="text-slate-500 text-lg max-w-xl mx-auto">

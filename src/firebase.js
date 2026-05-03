@@ -1,3 +1,18 @@
+/**
+ * Google Services used in ElectIQ:
+ * 1. Firebase Hosting        - App deployment
+ * 2. Firebase Analytics      - User tracking
+ * 3. Firebase Firestore      - Quiz score storage
+ * 4. Firebase Realtime Database - Live data
+ * 5. Firebase Storage        - File storage
+ * 6. Firebase Remote Config  - Feature flags
+ * 7. Firebase Performance    - Speed monitoring
+ * 8. Google Gemini AI        - Chat assistant
+ * 9. Google Translation API  - Hindi translation
+ * 10. Google Natural Language API - Text entity analysis
+ * 11. Google Maps Embed API  - ECI headquarters location
+ * 12. Google Fonts API       - Inter + Noto Sans Devanagari typography
+ */
 /* eslint-disable no-unused-vars */
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';
@@ -115,8 +130,16 @@ export const saveToRTDB = (path, data) => {
   }
 };
 
-export { analytics, db, rtdb, perf, storage, remoteConfig };
-export default app;
+export {
+  analytics,    // Firebase Analytics  – user tracking
+  db,           // Firebase Firestore  – quiz score storage
+  rtdb,         // Firebase Realtime Database – live data
+  storage,      // Firebase Storage    – file storage
+  remoteConfig, // Firebase Remote Config – feature flags
+  perf,         // Firebase Performance – speed monitoring
+};
+export default app; // Firebase App (Hosting)
+
 
 /**
  * Fetches a value from Firebase Remote Config

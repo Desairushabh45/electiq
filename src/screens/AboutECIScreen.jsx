@@ -115,6 +115,26 @@ export default function AboutECIScreen({ nav, screen }) {
         </div>
       </div>
 
+      {/* Google Maps Embed – ECI Headquarters */}
+      <div role="region" aria-labelledby="eci-map-heading" className="mb-14">
+        <h2 id="eci-map-heading" className="text-2xl font-extrabold text-slate-900 mb-2" style={{ fontFamily: 'Outfit' }}>
+          ECI Headquarters
+        </h2>
+        <p className="text-slate-500 text-sm mb-4">Nirvachan Sadan, Ashoka Road, New Delhi — the nerve centre of Indian democracy.</p>
+        <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+          <iframe
+            title="ECI Headquarters Location"
+            width="100%"
+            height="300"
+            style={{ border: 0 }}
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&q=Election+Commission+of+India+New+Delhi`}
+          />
+        </div>
+      </div>
+
       {/* Historical note */}
       <div role="region" aria-labelledby="legacy-heading" className="rounded-3xl p-8 text-center" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
         <p className="text-4xl mb-3" aria-hidden="true">🏛️</p>
@@ -136,4 +156,5 @@ AboutECIScreen.propTypes = {
   nav: PropTypes.func.isRequired,
   screen: PropTypes.string.isRequired,
 };
+
 

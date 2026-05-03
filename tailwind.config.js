@@ -11,6 +11,7 @@ export default {
       fontFamily: {
         sans:    ['Inter', 'system-ui', 'sans-serif'],
         display: ['Outfit', 'system-ui', 'sans-serif'],
+        hindi:   ['Noto Sans Devanagari', 'sans-serif'],
       },
       animation: {
         'fade-up': 'fadeUp 0.4s ease-out',

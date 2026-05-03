@@ -19,7 +19,7 @@ const Hero = React.memo(function Hero({ nav }) {
       </div>
 
       <div className="inline-flex items-center gap-2 bg-saffron-50 border border-saffron-200 text-saffron-700 px-4 py-2 rounded-full font-semibold text-sm">
-        🗳️ <span><span lang="hi">भारत का चुनाव मार्गदर्शक</span> · India's Election Guide</span>
+        🗳️ <span><span lang="hi" className="font-hindi">भारत का चुनाव मार्गदर्शक</span> · India's Election Guide</span>
       </div>
 
       <h1 className="text-5xl lg:text-6xl font-extrabold max-w-4xl tracking-tight leading-tight">

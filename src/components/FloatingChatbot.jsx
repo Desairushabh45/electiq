@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Bot, X, MessageSquare, Send, Sparkles, ChevronDown } from 'lucide-react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { trackEvent } from '../firebase';
+import { analyzeElectionText } from '../utils/nlpService';
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
@@ -70,6 +71,7 @@ const FloatingChatbot = React.memo(function FloatingChatbot() {
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [translations, setTranslations] = useState({});
   const [translating, setTranslating] = useState({});
+  const [nlpEntities, setNlpEntities] = useState([]);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -145,6 +147,19 @@ const FloatingChatbot = React.memo(function FloatingChatbot() {
 
       setMessages((prev) => [...prev, { role: 'ai', text: responseText }]);
       trackEvent('chat_response_received');
+
+      // Google Natural Language API — extract election entities from response
+      analyzeElectionText(responseText).then((entities) => {
+        const unique = [
+          ...new Set(
+            entities
+              .filter((e) => e.salience > 0.01)
+              .map((e) => e.name)
+              .slice(0, 6)
+          ),
+        ];
+        setNlpEntities(unique);
+      });
     } catch (err) {
       console.error('Gemini error:', err);
       const errMsg =
@@ -248,7 +263,7 @@ const FloatingChatbot = React.memo(function FloatingChatbot() {
                         {translating[i] ? '⏳ Translating...' : '🔄 Translate to Hindi'}
                       </button>
                     ) : (
-                      <div className="mt-1 p-2 bg-orange-50 border border-orange-100 rounded-lg text-xs text-slate-700" lang="hi">
+                      <div className="mt-1 p-2 bg-orange-50 border border-orange-100 rounded-lg text-xs text-slate-700 font-hindi" lang="hi">
                         <p className="font-bold text-orange-600 mb-1 text-[10px] uppercase tracking-wide">हिंदी अनुवाद</p>
                         <p>{translations[i]}</p>
                       </div>
@@ -287,6 +302,25 @@ const FloatingChatbot = React.memo(function FloatingChatbot() {
               </div>
             )}
 
+            {/* NLP Entity Tags — Detected Topics */}
+            {nlpEntities.length > 0 && !isLoading && (
+              <div className="mt-2 px-1">
+                <p className="text-[10px] text-slate-400 uppercase tracking-wider mb-1.5 font-medium">Detected topics:</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {nlpEntities.map((entity, i) => (
+                    <button
+                      key={i}
+                      onClick={() => sendMessage(`Tell me more about ${entity} in Indian elections`)}
+                      className="text-xs bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      aria-label={`Ask about ${entity}`}
+                    >
+                      #{entity}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div ref={messagesEndRef} />
           </div>
 
@@ -316,7 +350,7 @@ const FloatingChatbot = React.memo(function FloatingChatbot() {
             </div>
             <div className="flex justify-between items-center mt-2">
               <p className="text-xs text-slate-500 text-center flex-1">
-                ElectIQ 🇮🇳 · Non-partisan · <span lang="hi">निष्पक्ष जानकारी</span>
+                ElectIQ 🇮🇳 · Non-partisan · <span lang="hi" className="font-hindi">निष्पक्ष जानकारी</span>
               </p>
               <p className="text-xs text-slate-400 font-medium">
                 {input.length}/200

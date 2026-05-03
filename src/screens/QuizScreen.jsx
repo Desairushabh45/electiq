@@ -51,7 +51,7 @@ const RANKS = [
   { min: 6, label: 'भारत रत्न — Election Expert! 🏆', color: '#b45309' },
   { min: 4, label: 'Lok Sabha Scholar 🏛️', color: '#1a237e' },
   { min: 2, label: 'Engaged Citizen 🗳️', color: '#138808' },
-  { min: 0, label: <><span lang="hi">नागरिक शागिर्द</span> — Keep Learning 📚</>, color: '#FF9933' },
+  { min: 0, label: <><span lang="hi" className="font-hindi">नागरिक शागिर्द</span> — Keep Learning 📚</>, color: '#FF9933' },
 ];
 
 /**

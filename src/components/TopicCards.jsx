@@ -9,7 +9,7 @@ const topics = [
     id: 'register',
     icon: UserCheck,
     color: 'saffron',
-    title: <><span lang="hi">मतदाता पंजीकरण</span> · How to Register as a Voter</>,
+    title: <><span lang="hi" className="font-hindi">मतदाता पंजीकरण</span> · How to Register as a Voter</>,
     summary: 'Learn how to add your name to the Electoral Roll and get your Voter ID (EPIC) card — your gateway to Indian democracy.',
     content: [
       {
@@ -55,7 +55,7 @@ const topics = [
         text: 'Gram Panchayat, Municipal Corporation, and Nagar Panchayat elections are conducted by State Election Commissions (not the ECI). These elect local representatives who handle everyday civic needs — roads, sanitation, water supply.',
       },
       {
-        heading: <><span lang="hi">उपचुनाव</span> (By-Elections)</>,
+        heading: <><span lang="hi" className="font-hindi">उपचुनाव</span> (By-Elections)</>,
         text: 'If an MP or MLA seat falls vacant due to death, resignation, or disqualification, a by-election is held to fill that specific seat. It follows the same process as a regular election.',
       },
     ],
@@ -213,7 +213,7 @@ const TopicCards = () => {
     <section id="topics" className="w-full">
       <div className="text-center mb-8">
         <h2 className="text-3xl md:text-4xl text-slate-900 mb-3 font-bold">
-          <span lang="hi">मुख्य विषय</span> · Quick Topic Guides
+          <span lang="hi" className="font-hindi">मुख्य विषय</span> · Quick Topic Guides
         </h2>
         <p className="text-slate-600 max-w-2xl mx-auto text-lg">
           Click any topic to expand a detailed guide on key Indian election concepts.

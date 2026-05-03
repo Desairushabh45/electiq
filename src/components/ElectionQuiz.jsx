@@ -83,7 +83,7 @@ const quizQuestions = [
 
 const getRank = (score, total) => {
   const pct = (score / total) * 100;
-  if (pct === 100) return { label: <span><span lang="hi">भारत रत्न</span> — Election Expert! 🏆</span>, color: 'text-yellow-600' };
+  if (pct === 100) return { label: <span><span lang="hi" className="font-hindi">भारत रत्न</span> — Election Expert! 🏆</span>, color: 'text-yellow-600' };
   if (pct >= 71) return { label: 'Lok Sabha Scholar 🏛️', color: 'text-blue-700' };
   if (pct >= 43) return { label: 'Engaged Voter 🗳️', color: 'text-green-700' };
   return { label: 'Naagrik Shagird (Civic Learner) 📚', color: 'text-orange-600' };

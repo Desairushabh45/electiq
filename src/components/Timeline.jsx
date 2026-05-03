@@ -170,7 +170,7 @@ const Timeline = ({ rightWidget }) => {
     <section className="w-full" id="timeline">
       <div className="text-center mb-6">
         <h2 className="text-3xl md:text-4xl text-slate-900 mb-3 font-bold">
-          <span lang="hi">भारतीय चुनाव प्रक्रिया</span> · Indian Election Timeline
+          <span lang="hi" className="font-hindi">भारतीय चुनाव प्रक्रिया</span> · Indian Election Timeline
         </h2>
         <p className="text-slate-600 max-w-2xl mx-auto text-lg">
           Click any step to understand how India's general elections work — from voter registration to swearing-in.
@@ -252,7 +252,7 @@ const Timeline = ({ rightWidget }) => {
             <div className={`${c.bg} border ${c.border} rounded-xl p-5 flex gap-3`}>
               <Info size={20} className={`${c.bullet} flex-shrink-0 mt-0.5`} aria-hidden="true" />
               <div>
-                <p className={`font-bold text-sm mb-1 ${c.text}`}>💡 <span lang="hi">क्या आप जानते हैं?</span> (Did You Know?)</p>
+                <p className={`font-bold text-sm mb-1 ${c.text}`}>💡 <span lang="hi" className="font-hindi">क्या आप जानते हैं?</span> (Did You Know?)</p>
                 <p className="text-slate-700 text-sm leading-relaxed">{activeData.detail.didYouKnow}</p>
               </div>
             </div>

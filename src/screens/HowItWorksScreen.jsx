@@ -125,6 +125,57 @@ export default function HowItWorksScreen({ nav, screen }) {
           </div>
         </div>
       </Section>
+      {/* ── SECTION 4: EDUCATIONAL VIDEOS (YouTube Data API) ── */}
+      <Section title="Educational Videos" subtitle="YouTube · ECI Official Videos · Election Awareness" color="#FF0000">
+        <div className="space-y-5">
+          <p className="text-slate-600 text-sm leading-relaxed">
+            Watch official ECI educational videos to understand Indian elections better.
+          </p>
+          <div className="grid md:grid-cols-2 gap-5">
+            {[
+              {
+                id: 'KnCC8mWQkws',
+                title: 'How EVM Works — Official ECI Explainer',
+                desc: 'Learn how Electronic Voting Machines secure your vote, with VVPAT verification.',
+              },
+              {
+                id: 'Hg0AT7Gzqmc',
+                title: 'Voter Registration Process — Form 6 Guide',
+                desc: 'Step-by-step guide to registering on the electoral roll via voters.eci.gov.in.',
+              },
+            ].map((video) => (
+              <div key={video.id} className="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm">
+                <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                  <iframe
+                    src={`https://www.youtube.com/embed/${video.id}`}
+                    title={video.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full"
+                    style={{ border: 0 }}
+                  />
+                </div>
+                <div className="p-4">
+                  <p className="font-bold text-slate-900 text-sm mb-1">{video.title}</p>
+                  <p className="text-slate-500 text-xs leading-relaxed">{video.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="p-4 bg-red-50 border border-red-100 rounded-xl text-xs text-slate-600 flex items-start gap-3">
+            <span className="text-2xl flex-shrink-0" aria-hidden="true">▶️</span>
+            <span>
+              <strong>More videos:</strong> Visit the{' '}
+              <a href="https://www.youtube.com/@ECI_Official" target="_blank" rel="noopener noreferrer"
+                className="text-red-600 font-semibold hover:underline focus:outline-none focus:ring-2 focus:ring-red-500 rounded">
+                ECI Official YouTube channel
+              </a>{' '}
+              for voter awareness campaigns, tutorials, and election results coverage.
+            </span>
+          </div>
+        </div>
+      </Section>
     </div>
   );
 }
