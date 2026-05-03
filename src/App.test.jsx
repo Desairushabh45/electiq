@@ -5,6 +5,8 @@ import App from './App'
 vi.mock('./firebase', () => ({
   trackEvent: vi.fn(),
   saveToRTDB: vi.fn(),
+  checkPageSpeed: vi.fn().mockResolvedValue(null),
+  checkSafeBrowsing: vi.fn().mockResolvedValue(true),
   analytics: {},
   default: {},
 }))

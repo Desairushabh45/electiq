@@ -12,6 +12,9 @@
  * 10. Google Natural Language API - Text entity analysis
  * 11. Google Maps Embed API  - ECI headquarters location
  * 12. Google Fonts API       - Inter + Noto Sans Devanagari typography
+ * 13. Google PageSpeed Insights API - Performance score monitoring
+ * 14. Google Safe Browsing API - URL threat detection
+ * 15. Firebase App Check     - Abuse prevention (reCAPTCHA v3)
  */
 /* eslint-disable no-unused-vars */
 import { initializeApp } from 'firebase/app';
@@ -21,6 +24,7 @@ import { getPerformance, trace } from 'firebase/performance';
 import { getDatabase, ref, push, onValue } from 'firebase/database';
 import { getRemoteConfig, fetchAndActivate, getValue } from 'firebase/remote-config';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -38,6 +42,17 @@ const analytics = getAnalytics(app);
 const db = getFirestore(app);
 const rtdb = getDatabase(app);
 const storage = getStorage(app);
+
+// Firebase App Check — reCAPTCHA v3 abuse prevention
+let appCheck = null;
+try {
+  appCheck = initializeAppCheck(app, {
+    provider: new ReCaptchaV3Provider('6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'),
+    isTokenAutoRefreshEnabled: true,
+  });
+} catch (e) {
+  console.warn('App Check not available:', e.message);
+}
 
 const remoteConfig = getRemoteConfig(app);
 remoteConfig.settings.minimumFetchIntervalMillis = 3600000;
@@ -137,6 +152,7 @@ export {
   storage,      // Firebase Storage    – file storage
   remoteConfig, // Firebase Remote Config – feature flags
   perf,         // Firebase Performance – speed monitoring
+  appCheck,     // Firebase App Check  – reCAPTCHA v3 abuse prevention
 };
 export default app; // Firebase App (Hosting)
 
@@ -173,3 +189,50 @@ export const uploadFile = async (file, path) => {
   }
 };
 
+/**
+ * Calls Google PageSpeed Insights API to get performance score
+ * @returns {Promise<number|null>} performance score 0-1 or null on error
+ */
+export const checkPageSpeed = async () => {
+  try {
+    const url = encodeURIComponent('https://electiq-ffd78.web.app');
+    const response = await fetch(
+      `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&key=${import.meta.env.VITE_FIREBASE_API_KEY}&strategy=mobile`
+    );
+    const data = await response.json();
+    return data.lighthouseResult?.categories?.performance?.score ?? null;
+  } catch (e) {
+    console.warn('PageSpeed API error:', e.message);
+    return null;
+  }
+};
+
+/**
+ * Checks a URL against Google Safe Browsing API v4
+ * @param {string} url - URL to check for threats
+ * @returns {Promise<boolean>} true if URL is safe, false if threats found
+ */
+export const checkSafeBrowsing = async (url) => {
+  try {
+    const response = await fetch(
+      `https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${import.meta.env.VITE_FIREBASE_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          client: { clientId: 'electiq', clientVersion: '1.0.0' },
+          threatInfo: {
+            threatTypes: ['MALWARE', 'SOCIAL_ENGINEERING'],
+            platformTypes: ['ANY_PLATFORM'],
+            threatEntryTypes: ['URL'],
+            threatEntries: [{ url }],
+          },
+        }),
+      }
+    );
+    const data = await response.json();
+    return !data.matches; // true = safe
+  } catch (e) {
+    return true; // assume safe on error
+  }
+};

@@ -32,6 +32,25 @@ vi.mock('firebase/database', () => ({
 
 vi.mock('firebase/performance', () => ({
   getPerformance: vi.fn(() => ({})),
+  trace: vi.fn(() => ({ start: vi.fn(), stop: vi.fn() })),
+}))
+
+vi.mock('firebase/storage', () => ({
+  getStorage: vi.fn(() => ({})),
+  ref: vi.fn(),
+  uploadBytes: vi.fn(),
+  getDownloadURL: vi.fn(),
+}))
+
+vi.mock('firebase/remote-config', () => ({
+  getRemoteConfig: vi.fn(() => ({ settings: {} })),
+  fetchAndActivate: vi.fn(),
+  getValue: vi.fn(() => ({ asString: () => '' })),
+}))
+
+vi.mock('firebase/app-check', () => ({
+  initializeAppCheck: vi.fn(() => ({})),
+  ReCaptchaV3Provider: vi.fn(),
 }))
 
 describe('Firebase', () => {
@@ -51,3 +70,4 @@ describe('Firebase', () => {
     expect(() => trackEvent('test_event')).not.toThrow()
   })
 })
+
