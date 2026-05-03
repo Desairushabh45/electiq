@@ -105,6 +105,27 @@ const FloatingChatbot = React.memo(function FloatingChatbot() {
     return formatted;
   };
 
+  const getFallbackResponse = (question) => {
+    const q = question.toLowerCase();
+    if (q.includes('register') || q.includes('form 6'))
+      return 'To register as a voter in India: 1) Visit voters.eci.gov.in 2) Click on Register as New Voter 3) Fill Form 6 online 4) Submit with ID proof 5) You will receive your Voter ID card within 30 days.';
+    if (q.includes('evm'))
+      return 'EVM (Electronic Voting Machine) is used in Indian elections since 1982. It has two units — Control Unit with the polling officer and Ballot Unit where the voter presses the button. VVPAT prints a paper slip to verify your vote.';
+    if (q.includes('nota'))
+      return 'NOTA stands for None Of The Above. It was introduced in 2013 by Supreme Court order. If you press NOTA, your vote is counted but does not go to any candidate.';
+    if (q.includes('lok sabha'))
+      return 'Lok Sabha is the lower house of Indian Parliament. It has 543 elected seats. Elections are held every 5 years. Minimum age to contest is 25 years.';
+    if (q.includes('eci') || q.includes('election commission'))
+      return 'Election Commission of India (ECI) was established on January 25, 1950 under Article 324 of the Constitution. It is an autonomous body that conducts free and fair elections in India.';
+    if (q.includes('vvpat'))
+      return 'VVPAT (Voter Verified Paper Audit Trail) was introduced in 2013. After pressing the EVM button, a paper slip shows your voted candidate for 7 seconds before dropping into a sealed box.';
+    if (q.includes('rajya sabha'))
+      return 'Rajya Sabha is the upper house of Indian Parliament with 245 seats. Members are elected by state legislators, not directly by citizens. It reviews and passes legislation from the Lok Sabha.';
+    if (q.includes('mcc') || q.includes('model code'))
+      return 'The Model Code of Conduct (MCC) is a set of guidelines issued by ECI that comes into force when elections are announced. It prevents the ruling party from misusing government resources for campaigning.';
+    return 'I can help you understand Indian elections! Ask me about voter registration, EVMs, VVPAT, ECI, Lok Sabha, Rajya Sabha, or the Model Code of Conduct.';
+  };
+
   const sendMessage = async (userText) => {
     const trimmed = sanitizeInput(userText);
     if (!trimmed || isLoading) return;
@@ -162,13 +183,25 @@ const FloatingChatbot = React.memo(function FloatingChatbot() {
       });
     } catch (err) {
       console.error('Gemini error:', err);
-      const errMsg =
-        err.message?.includes('API key')
-          ? 'API key is not configured. Please check your .env file.'
-          : err.message?.includes('429') || err.message?.includes('quota')
-          ? "I've hit my usage limit. Please try again in a moment."
-          : `Something went wrong: ${err.message}. Please try again.`;
-      setMessages((prev) => [...prev, { role: 'ai', text: `⚠️ ${errMsg}` }]);
+      if (err.message?.includes('API key')) {
+        // Config error — must be surfaced to developer
+        setMessages((prev) => [...prev, { role: 'ai', text: '⚠️ API key is not configured. Please check your .env file.' }]);
+      } else if (
+        err.message?.includes('429') ||
+        err.message?.includes('quota') ||
+        err.message?.includes('RESOURCE_EXHAUSTED') ||
+        err.message?.includes('limit')
+      ) {
+        // Quota/rate-limit — use keyword fallback silently
+        const fallback = getFallbackResponse(trimmed);
+        setMessages((prev) => [...prev, { role: 'ai', text: fallback }]);
+        trackEvent('chat_fallback_used', { reason: 'quota' });
+      } else {
+        // Unknown error — also use fallback so UX stays helpful
+        const fallback = getFallbackResponse(trimmed);
+        setMessages((prev) => [...prev, { role: 'ai', text: fallback }]);
+        trackEvent('chat_fallback_used', { reason: 'error' });
+      }
     } finally {
       setIsLoading(false);
     }
