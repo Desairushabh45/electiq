@@ -23,15 +23,20 @@ const Hero = React.memo(function Hero({ nav }) {
       </div>
 
       <h1 className="text-5xl lg:text-6xl font-extrabold max-w-4xl tracking-tight leading-tight">
-        <span className="text-slate-900">Understand India's </span>
-        <span className="text-saffron-500">Democracy</span>
-        <br />
-        <span className="text-india-navy">with Clarity</span>
+        <span className="text-slate-900">Understand the </span>
+        <span className="text-saffron-500">Election Process</span>
       </h1>
 
       <p className="text-xl text-slate-600 max-w-2xl mt-2 leading-relaxed">
-        Your interactive guide to India's democratic election process — from Voter ID registration to Oath-taking. Powered by AI, built for every Indian citizen.
+        Step-by-step interactive guide to Indian elections — timelines, voting procedures, and democratic processes made simple for every citizen
       </p>
+
+      {/* 3 highlight badges */}
+      <div className="flex flex-wrap justify-center gap-3 mt-2 mb-2">
+        <span className="bg-green-50 text-green-700 border border-green-200 px-4 py-1.5 rounded-full text-sm font-medium">✅ Interactive Timelines</span>
+        <span className="bg-green-50 text-green-700 border border-green-200 px-4 py-1.5 rounded-full text-sm font-medium">✅ Step-by-Step Process</span>
+        <span className="bg-green-50 text-green-700 border border-green-200 px-4 py-1.5 rounded-full text-sm font-medium">✅ AI-Powered Assistant</span>
+      </div>
 
       <div className="flex flex-wrap justify-center gap-4 mt-4">
         <button
@@ -46,20 +51,6 @@ const Hero = React.memo(function Hero({ nav }) {
         >
           Take the Quiz 📝
         </button>
-      </div>
-
-      {/* Stat badges */}
-      <div className="flex flex-wrap justify-center gap-4 mt-4">
-        {[
-          { label: 'Registered Voters', value: '96.8 Crore' },
-          { label: 'Lok Sabha Seats', value: '543' },
-          { label: 'Polling Booths', value: '10.5 Lakh+' },
-        ].map((stat) => (
-          <div key={stat.label} className="bg-white border border-slate-200 rounded-xl px-5 py-3 shadow-sm text-center">
-            <p className="text-2xl font-extrabold text-saffron-500">{stat.value}</p>
-            <p className="text-xs text-slate-500 font-medium mt-0.5">{stat.label}</p>
-          </div>
-        ))}
       </div>
     </section>
   );

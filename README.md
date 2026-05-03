@@ -1,22 +1,18 @@
 # 🗳️ ElectIQ — Interactive Election Process Education Assistant
 
-## 🎯 Problem Statement
-Create an assistant that helps users understand the election 
-process, timelines, and steps in an interactive and 
-easy-to-follow way.
+## Problem Statement
+"Create an assistant that helps users understand the 
+election process, timelines, and steps in an interactive 
+and easy-to-follow way."
 
-## ✅ How ElectIQ Solves This
-ElectIQ is an AI-powered interactive assistant that helps 
-every Indian citizen understand the complete election process, 
-timelines, and democratic steps in a simple, engaging, 
-and easy-to-follow way.
-
-The assistant addresses all three core requirements:
-- UNDERSTAND: AI chat assistant explains any election topic instantly
-- TIMELINES: Visual 8-stage election timeline from announcement to oath
-- STEPS: Step-by-step guides for voter registration, EVM voting, counting
-- INTERACTIVE: Quiz, clickable timeline, AI chat, animated UI
-- EASY-TO-FOLLOW: Hindi + English support, simple language, visual cards
+## How ElectIQ Solves This
+ElectIQ directly addresses this by providing:
+✅ Interactive 8-stage election timeline
+✅ Step-by-step process explanations  
+✅ AI assistant for instant answers
+✅ Quiz to verify understanding
+✅ Visual and bilingual content (Hindi + English)
+✅ Mobile-first responsive design
 
 ## ✨ Key Features
 

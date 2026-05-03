@@ -59,30 +59,42 @@ export default function App() {
     checkSafeBrowsing('https://electiq-ffd78.web.app').then((isSafe) => {
       trackEvent('safe_browsing_check', { is_safe: isSafe });
     });
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        console.log('[ElectIQ] App idle - preloading resources');
+      });
+    }
   }, []);
 
   const screenProps = { nav, screen };
 
   return (
-    <ErrorBoundary>
-      <div className="min-h-screen bg-white">
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:bg-blue-600 focus:text-white focus:p-3">
-          Skip to main content
-        </a>
-        <Navbar screen={screen} nav={nav} />
-        <div className="pt-16">
-          <div key={screen} className="page-animate">
-            <Suspense fallback={<SkeletonLoader />}>
-              {screen === SCREENS.HOME          && <HomeScreen {...screenProps} />}
-              {screen === SCREENS.TIMELINE      && <TimelineScreen {...screenProps} />}
-              {screen === SCREENS.HOW_IT_WORKS  && <HowItWorksScreen {...screenProps} />}
-              {screen === SCREENS.QUIZ          && <QuizScreen {...screenProps} />}
-              {screen === SCREENS.ABOUT_ECI     && <AboutECIScreen {...screenProps} />}
-            </Suspense>
-          </div>
+    <div className="min-h-screen bg-white">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:bg-blue-600 focus:text-white focus:p-3">
+        Skip to main content
+      </a>
+      <Navbar screen={screen} nav={nav} />
+      <div className="pt-16">
+        <div key={screen} className="page-animate">
+          {screen === SCREENS.HOME && (
+            <ErrorBoundary><Suspense fallback={<SkeletonLoader />}><HomeScreen {...screenProps} /></Suspense></ErrorBoundary>
+          )}
+          {screen === SCREENS.TIMELINE && (
+            <ErrorBoundary><Suspense fallback={<SkeletonLoader />}><TimelineScreen {...screenProps} /></Suspense></ErrorBoundary>
+          )}
+          {screen === SCREENS.HOW_IT_WORKS && (
+            <ErrorBoundary><Suspense fallback={<SkeletonLoader />}><HowItWorksScreen {...screenProps} /></Suspense></ErrorBoundary>
+          )}
+          {screen === SCREENS.QUIZ && (
+            <ErrorBoundary><Suspense fallback={<SkeletonLoader />}><QuizScreen {...screenProps} /></Suspense></ErrorBoundary>
+          )}
+          {screen === SCREENS.ABOUT_ECI && (
+            <ErrorBoundary><Suspense fallback={<SkeletonLoader />}><AboutECIScreen {...screenProps} /></Suspense></ErrorBoundary>
+          )}
         </div>
-        <FloatingChatbot />
       </div>
-    </ErrorBoundary>
+      <FloatingChatbot />
+    </div>
   );
 }

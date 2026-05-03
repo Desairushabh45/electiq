@@ -1,30 +1,49 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { BookOpen, Clock, HelpCircle, Info, ArrowRight, Users, Vote, Award } from 'lucide-react';
+import { BookOpen, Clock, HelpCircle, Info, ArrowRight, Users, Vote, Award, Bot, Megaphone, FileText, CheckSquare, Landmark, Calendar } from 'lucide-react';
 import { SCREENS } from '../constants';
 
 const FEATURE_CARDS = [
   {
-    icon: BookOpen, label: 'How It Works', screen: SCREENS.HOW_IT_WORKS,
-    desc: 'Voter registration, EVMs, and vote counting explained step by step.',
+    icon: BookOpen, label: 'Election Process', screen: SCREENS.HOW_IT_WORKS,
+    desc: 'How Indian elections work step by step',
     bg: 'bg-orange-50', iconColor: '#FF9933', border: 'border-orange-100',
   },
   {
-    icon: Clock, label: 'Election Timeline', screen: SCREENS.TIMELINE,
-    desc: 'Follow all 8 stages of an Indian election from announcement to oath.',
+    icon: Clock, label: 'Interactive Timeline', screen: SCREENS.TIMELINE,
+    desc: 'Follow all 8 stages visually',
     bg: 'bg-blue-50', iconColor: '#1a237e', border: 'border-blue-100',
   },
   {
-    icon: HelpCircle, label: 'Test Yourself', screen: SCREENS.QUIZ,
-    desc: '6 quick questions to test your knowledge of Indian elections.',
+    icon: Bot, label: 'AI Assistant', screen: null, isAction: true,
+    desc: 'Ask any election question instantly',
     bg: 'bg-green-50', iconColor: '#138808', border: 'border-green-100',
   },
   {
-    icon: Info, label: 'About ECI', screen: SCREENS.ABOUT_ECI,
-    desc: 'Learn about India\'s Election Commission and its role in democracy.',
+    icon: HelpCircle, label: 'Test Yourself', screen: SCREENS.QUIZ,
+    desc: 'Quiz to check your understanding',
     bg: 'bg-purple-50', iconColor: '#7c3aed', border: 'border-purple-100',
   },
+  {
+    icon: Vote, label: 'How It Works', screen: SCREENS.HOW_IT_WORKS,
+    desc: 'EVMs, VVPAT, voter registration explained',
+    bg: 'bg-rose-50', iconColor: '#e11d48', border: 'border-rose-100',
+  },
+  {
+    icon: Info, label: 'About ECI', screen: SCREENS.ABOUT_ECI,
+    desc: 'Election Commission of India facts',
+    bg: 'bg-cyan-50', iconColor: '#0891b2', border: 'border-cyan-100',
+  },
+];
+
+const PROCESS_STEPS = [
+  { num: 1, title: 'Announcement', desc: 'ECI announces election dates and enforces MCC.', icon: Megaphone },
+  { num: 2, title: 'Voter Registration', desc: 'Citizens enroll via Form 6 to get Voter ID.', icon: FileText },
+  { num: 3, title: 'Nominations', desc: 'Candidates file papers and declare assets.', icon: BookOpen },
+  { num: 4, title: 'Campaigning', desc: 'Parties present manifestos to the public.', icon: Users },
+  { num: 5, title: 'Voting Day', desc: 'Citizens cast their vote using EVMs and VVPAT.', icon: CheckSquare },
+  { num: 6, title: 'Results', desc: 'Votes are counted and the new government forms.', icon: Landmark },
 ];
 
 const STATS = [
@@ -35,11 +54,12 @@ const STATS = [
 
 /**
  * HomeScreen component - main landing page for ElectIQ
- * @param {function} nav - navigation handler to change screens
- * @param {string} screen - currently active screen identifier
+ * @param {Object} props - component props
+ * @param {function} props.nav - navigation handler to change screens
+ * @param {string} props.screen - currently active screen identifier
  * @returns {JSX.Element} Landing page with feature cards and stats
  */
-export default function HomeScreen({ nav, screen }) {
+function HomeScreen({ nav, screen }) {
   const [electionFact, setElectionFact] = useState('');
 
   useEffect(() => {
@@ -48,6 +68,7 @@ export default function HomeScreen({ nav, screen }) {
       .then(data => setElectionFact(data.fact))
       .catch(() => setElectionFact('India has 96.8 crore registered voters'));
   }, []);
+
   return (
     <div id="main-content" role="main">
       {/* ── HERO ── */}
@@ -99,8 +120,55 @@ export default function HomeScreen({ nav, screen }) {
         </div>
       </section>
 
+      {/* ── WHAT IS ELECTIQ BANNER ── */}
+      <section aria-label="About ElectIQ" className="bg-blue-50 py-12 px-6 border-b border-blue-100">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-extrabold text-slate-900 mb-4">What is ElectIQ?</h2>
+          <p className="text-lg text-slate-700 leading-relaxed max-w-3xl mx-auto">
+            ElectIQ is an interactive assistant that helps every Indian citizen understand the election process, follow election timelines step by step, and learn how democracy works — in simple Hindi and English.
+          </p>
+        </div>
+      </section>
+
+      {/* ── DEDICATED ELECTION PROCESS SECTION ── */}
+      <section aria-labelledby="process-heading" className="max-w-6xl mx-auto px-6 py-16">
+        <div className="text-center mb-12">
+          <h2 id="process-heading" className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">How Indian Elections Work</h2>
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">Follow the complete process from announcement to oath-taking</p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+          {PROCESS_STEPS.map((step) => {
+            const Icon = step.icon;
+            return (
+              <div key={step.num} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-[100px] -z-10 group-hover:bg-blue-100 transition-colors" />
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center font-bold text-xl flex-shrink-0">
+                    {step.num}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+                      <Icon size={20} className="text-blue-600" />
+                      {step.title}
+                    </h3>
+                    <p className="text-slate-600 text-sm leading-relaxed">{step.desc}</p>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        <div className="text-center">
+          <button onClick={() => nav(SCREENS.TIMELINE)} className="inline-flex items-center gap-2 bg-india-navy text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-900 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            See Full Timeline <ArrowRight size={18} />
+          </button>
+        </div>
+      </section>
+
       {/* ── STATS ── */}
-      <section role="region" aria-label="Quick Stats" className="max-w-4xl mx-auto px-6 py-10">
+      <section role="region" aria-label="Quick Stats" className="max-w-4xl mx-auto px-6 pb-16">
         <div className="grid grid-cols-3 gap-4">
           {STATS.map((s, i) => {
             const Icon = s.icon;
@@ -116,26 +184,26 @@ export default function HomeScreen({ nav, screen }) {
       </section>
 
       {/* ── FEATURE CARDS ── */}
-      <section role="region" aria-labelledby="features-heading" className="max-w-6xl mx-auto px-6 pb-16">
+      <section role="region" aria-labelledby="features-heading" className="max-w-6xl mx-auto px-6 pb-16 bg-slate-50 pt-16 rounded-3xl mb-16">
         <div className="text-center mb-10">
-          <h2 id="features-heading" className="section-heading">What Would You Like to Learn?</h2>
+          <h2 id="features-heading" className="text-3xl font-extrabold text-slate-900 mb-4">What Would You Like to Learn?</h2>
           <p className="text-slate-500 text-lg max-w-xl mx-auto">
             Choose a topic below to start your election education journey.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {FEATURE_CARDS.map((card, i) => {
             const Icon = card.icon;
             return (
-              <button key={i} onClick={() => nav(card.screen)}
+              <button key={i} onClick={() => card.isAction ? window.dispatchEvent(new CustomEvent('open-chatbot')) : nav(card.screen)}
                 aria-label={`Learn more about ${card.label}`}
-                className={`group text-left ${card.bg} border ${card.border} rounded-2xl p-6 card-shadow hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500`}>
+                className={`group text-left ${card.bg} border ${card.border} rounded-2xl p-6 card-shadow hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white`}>
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                  style={{ background: card.iconColor + '20' }}>
+                  style={{ background: card.iconColor + '15' }}>
                   <Icon size={24} style={{ color: card.iconColor }} aria-hidden="true" />
                 </div>
-                <h3 className="font-bold text-lg text-slate-900 mb-2 group-hover:text-inavy-500 transition-colors">
+                <h3 className="font-bold text-lg text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">
                   {card.label}
                 </h3>
                 <p className="text-slate-600 text-sm leading-relaxed mb-4">{card.desc}</p>
@@ -208,4 +276,6 @@ HomeScreen.propTypes = {
   nav: PropTypes.func.isRequired,
   screen: PropTypes.string.isRequired,
 };
+
+export default React.memo(HomeScreen);
 

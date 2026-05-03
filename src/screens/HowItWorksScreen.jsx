@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const Section = ({ title, subtitle, color, children }) => (
@@ -33,7 +34,7 @@ const Step = ({ num, title, desc, color, icon }) => (
  * @param {string} screen - currently active screen identifier
  * @returns {JSX.Element} Three sections explaining voting processes
  */
-export default function HowItWorksScreen({ nav, screen }) {
+function HowItWorksScreen({ nav, screen }) {
   return (
     <div id="main-content" role="main" className="max-w-3xl mx-auto px-4 py-12">
       <div className="text-center mb-14">
@@ -184,4 +185,6 @@ HowItWorksScreen.propTypes = {
   nav: PropTypes.func.isRequired,
   screen: PropTypes.string.isRequired,
 };
+
+export default React.memo(HowItWorksScreen);
 

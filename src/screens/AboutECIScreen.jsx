@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const FACTS = [
@@ -43,7 +44,7 @@ const HOW_FAIR = [
  * @param {string} screen - currently active screen identifier
  * @returns {JSX.Element} ECI information page
  */
-export default function AboutECIScreen({ nav, screen }) {
+function AboutECIScreen({ nav, screen }) {
   return (
     <div id="main-content" role="main" className="max-w-5xl mx-auto px-4 py-12">
       {/* Header */}
@@ -66,6 +67,25 @@ export default function AboutECIScreen({ nav, screen }) {
           "The superintendence, direction and control of the preparation of the electoral rolls for, and the conduct of, all elections to Parliament and to the Legislature of every State... shall be vested in the Election Commission."
         </p>
         <p className="text-blue-300 text-sm mt-3">— Constitution of India, Article 324(1)</p>
+      </div>
+
+      {/* Understanding the Election Process */}
+      <div role="region" aria-labelledby="process-heading-eci" className="mb-14">
+        <h2 id="process-heading-eci" className="text-2xl font-extrabold text-slate-900 mb-6" style={{ fontFamily: 'Outfit' }}>Understanding the Election Process</h2>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          {[
+            { step: 'Step 1', title: 'Election Announcement' },
+            { step: 'Step 2', title: 'Voter Registration' },
+            { step: 'Step 3', title: 'Nomination & Campaigning' },
+            { step: 'Step 4', title: 'Voting Day' },
+            { step: 'Step 5', title: 'Results & Government Formation' }
+          ].map((s, i) => (
+            <div key={i} className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-center">
+              <span className="inline-block bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded-md mb-2">{s.step}</span>
+              <p className="text-sm font-bold text-slate-800">{s.title}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Quick Facts Grid */}
@@ -156,5 +176,7 @@ AboutECIScreen.propTypes = {
   nav: PropTypes.func.isRequired,
   screen: PropTypes.string.isRequired,
 };
+
+export default React.memo(AboutECIScreen);
 
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { CheckCircle2, XCircle, RefreshCcw, Award } from 'lucide-react';
 
@@ -60,7 +60,7 @@ const RANKS = [
  * @param {string} screen - currently active screen identifier
  * @returns {JSX.Element} Interactive 6-question quiz
  */
-export default function QuizScreen({ nav, screen }) {
+function QuizScreen({ nav, screen }) {
   const [idx, setIdx]         = useState(0);
   const [chosen, setChosen]   = useState(null);
   const [score, setScore]     = useState(0);
@@ -205,3 +205,4 @@ QuizScreen.propTypes = {
   screen: PropTypes.string.isRequired,
 };
 
+export default React.memo(QuizScreen);

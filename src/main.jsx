@@ -5,22 +5,23 @@ import './index.css'
 // Initialize Firebase Analytics on app start
 import './firebase.js'
 
-// Performance Observer — tracks LCP for Web Vitals monitoring
+// Performance Observer — tracks Web Vitals
+const reportWebVitals = (metric) => {
+  if (metric.name === 'CLS') console.log('[ElectIQ] CLS:', metric.value);
+  if (metric.name === 'LCP') console.log('[ElectIQ] LCP:', metric.value);
+  if (metric.name === 'FID') console.log('[ElectIQ] FID:', metric.value);
+};
+
 if ('PerformanceObserver' in window) {
+  const observer = new PerformanceObserver((list) => {
+    list.getEntries().forEach(entry => reportWebVitals(entry));
+  });
   try {
-    const observer = new PerformanceObserver((list) => {
-      list.getEntries().forEach((entry) => {
-        if (entry.entryType === 'largest-contentful-paint') {
-          console.log('[ElectIQ] LCP:', Math.round(entry.startTime), 'ms');
-        }
-        if (entry.entryType === 'first-input') {
-          console.log('[ElectIQ] FID:', Math.round(entry.processingStart - entry.startTime), 'ms');
-        }
-      });
-    });
-    observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input'] });
+    observer.observe({ type: 'largest-contentful-paint', buffered: true });
+    observer.observe({ type: 'first-input', buffered: true });
+    observer.observe({ type: 'layout-shift', buffered: true });
   } catch (e) {
-    // PerformanceObserver not fully supported — safe to ignore
+    console.warn('[ElectIQ] PerformanceObserver error:', e);
   }
 }
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const STEPS = [
@@ -67,7 +67,7 @@ const STEPS = [
  * @param {string} screen - currently active screen identifier
  * @returns {JSX.Element} 8-step timeline of the election process
  */
-export default function TimelineScreen({ nav, screen }) {
+function TimelineScreen({ nav, screen }) {
   const [active, setActive] = useState(null);
 
   return (
@@ -174,4 +174,6 @@ TimelineScreen.propTypes = {
   nav: PropTypes.func.isRequired,
   screen: PropTypes.string.isRequired,
 };
+
+export default React.memo(TimelineScreen);
 

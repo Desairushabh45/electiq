@@ -4,16 +4,22 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { trackEvent } from '../firebase';
 import { analyzeElectionText } from '../utils/nlpService';
 
+import { MAX_CHAT_LENGTH } from '../constants';
+
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
-const MAX_MESSAGE_LENGTH = 200;
+/**
+ * Sanitizes user input to prevent XSS and enforces length limits
+ * @param {string} text - User input string
+ * @returns {string} Sanitized string
+ */
 const sanitizeInput = (text) => text
   .replace(/</g, '&lt;')
   .replace(/>/g, '&gt;')
   .replace(/javascript:/gi, '')
   .replace(/on\w+=/gi, '')
   .trim()
-  .slice(0, MAX_MESSAGE_LENGTH);
+  .slice(0, MAX_CHAT_LENGTH);
 
 const systemPrompt = "You are ElectIQ, an Indian election education assistant. Help users understand Indian elections, ECI, voting procedures, EVMs, VVPAT, Form 6 voter registration, Lok Sabha, Rajya Sabha, Model Code of Conduct, and democratic processes. Give clear simple educational answers. Add Hindi terms where helpful.";
 
@@ -46,6 +52,10 @@ const translateToHindi = async (text) => {
   return data.data.translations[0].translatedText;
 };
 
+/**
+ * Renders an animated typing indicator for the chatbot
+ * @returns {JSX.Element} Typing dots animation
+ */
 const TypingDots = () => (
   <div className="flex items-center gap-1 px-1 py-2">
     <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
@@ -57,6 +67,11 @@ const TypingDots = () => (
 /**
  * Floating Chatbot component for AI election assistance
  * @returns {JSX.Element} Chatbot FAB and dialog window
+ */
+/**
+ * FloatingChatbot component - an AI-powered assistant accessible from anywhere in the app.
+ * Uses Gemini API and NLP translation service.
+ * @returns {JSX.Element} Floating action button and chat window
  */
 const FloatingChatbot = React.memo(function FloatingChatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -416,5 +431,7 @@ const FloatingChatbot = React.memo(function FloatingChatbot() {
     </div>
   );
 });
+
+FloatingChatbot.propTypes = {};
 
 export default FloatingChatbot;

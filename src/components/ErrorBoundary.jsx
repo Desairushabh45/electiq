@@ -8,13 +8,18 @@ import PropTypes from 'prop-types';
  * @returns {JSX.Element} Children or fallback error UI
  */
 class ErrorBoundaryBase extends Component {
-  state = { hasError: false }
+  constructor(props) { super(props); this.state = { hasError: false } }
   static getDerivedStateFromError() { return { hasError: true } }
+  componentDidCatch(error, info) { 
+    // Fallback if cloudLog is undefined
+    const cloudLog = typeof window !== 'undefined' && window.cloudLog ? window.cloudLog : console.error;
+    cloudLog(`Error: ${error.message}`, 'ERROR', info);
+  }
   render() {
     if (this.state.hasError) return (
-      <div role="alert" className="p-8 text-center text-red-600">
-        <h2>Something went wrong.</h2>
-        <button onClick={() => this.setState({ hasError: false })}>Try again</button>
+      <div className="text-center p-8">
+        <h2>Something went wrong</h2>
+        <button onClick={() => this.setState({hasError: false})}>Try Again</button>
       </div>
     )
     return this.props.children
